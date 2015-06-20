@@ -6,3 +6,28 @@ body {
 a {
   color: #00B7FF;
 }
+
+/*Home page*/
+#available-template-title{
+  margin: 40px;
+}
+
+.templates-available{
+  margin-bottom: 50px;
+}
+.templates-available .thumbnail {
+  display: inline;
+}
+
+.footer-details{
+  margin-top: 10px;
+}
+.terms-and-politics{
+  text-align: right;
+}
+.footer{
+  background-color: #367fa9;
+  margin:10px;
+  color: white;
+  min-height: 40px;
+}
