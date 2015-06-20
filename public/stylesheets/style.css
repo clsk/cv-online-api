@@ -1,12 +1,3 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-
-a {
-  color: #00B7FF;
-}
-
 /*Home page*/
 #available-template-title{
   margin: 40px;
@@ -24,6 +15,10 @@ a {
 }
 .terms-and-politics{
   text-align: right;
+}
+
+#copyright-text {
+    margin-left: 30%;
 }
 .footer{
   background-color: #367fa9;
