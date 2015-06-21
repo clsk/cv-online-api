@@ -49,53 +49,71 @@
         </div>
       </div>
     </div>
+    <div class="modal fade" id="modal-borrar-cuenta">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Borrar Cuenta</h4>
+          </div>
+          <div class="modal-body">
+                  <div class="form-group">
+                      <p> Esta seguro que desea eliminar su cuenta? <b> nota: </b> Esta acción no se puede deshacer. </p> 
+                  </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default"data-dismiss="modal">Cancelar</button>
+            <button type="button" id="btn-borrar-cuenta" class="btn btn-primary btn-ok">Continuar</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
     <header class="main-header">
       <a href="/" class="logo">Online CV</a>
       <nav class="navbar navbar-static-top" role="navigation">
         <!-- Navbar Right Menu -->
-        <div class="navbar-custom-menu">
-          <ul class="nav navbar-nav">
-            <!-- User Account: style can be found in dropdown.less -->
-            <li class="dropdown user user-menu">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
-                <span class="hidden-xs">Alexander Pierce</span>
+        <%if (isAuthenticated == true) {%>
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+              <!-- User Account: style can be found in dropdown.less -->
+              <li class="dropdown user user-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
+                  <span class="hidden-xs">Alexander Pierce</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <!-- User image -->
+                  <li class="user-header">
+                    <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
+                    <p>
+                      Alexander Pierce - Web Developer
+                      <small>Member since Nov. 2012</small>
+                    </p>
+                  </li>
+                  <!-- Menu Footer-->
+                  <li class="user-footer">
+                    <div class="pull-left">
+                      <a id="change-password" href="#" class="btn btn-default btn-flat" data-toggle="modal"data-target="#modal-cambiar-clave">Cambiar &#10; Contrase&ntilde;a</a>
+                    </div>
+                    <div class="pull-right">
+                      <a id="delete-account" href="#" class="btn btn-default btn-flat" data-toggle="modal"data-target="#modal-borrar-cuenta">Borrar Cta</a>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        <%} else {%>
+          <li>
+              <a>
+                  <i class="fa fa-sign-out"></i> Registrarse 
               </a>
-              <ul class="dropdown-menu">
-                <!-- User image -->
-                <li class="user-header">
-                  <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
-                  <p>
-                    Alexander Pierce - Web Developer
-                    <small>Member since Nov. 2012</small>
-                  </p>
-                </li>
-                <!-- Menu Body -->
-                <li class="user-body">
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
-                  </div>
-                </li>
-                <!-- Menu Footer-->
-                <li class="user-footer">
-                  <div class="pull-left">
-                    <a id="change-password" href="#" class="btn btn-default btn-flat" data-toggle="modal"data-target="#modal-cambiar-clave">Cambiar Contrase&ntilde;a</a>
-                  </div>
-                  <div class="pull-right">
-                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                  </div>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
+          </li>
+        <%}%>
       </nav>
     </header>
-    <%- include('../partials/side-bar'); %>
+    <%if (isAuthenticated == true) {%>
+      <%- include('../partials/side-bar'); %>
+    <%}%>
     <div class="content-wrapper">
