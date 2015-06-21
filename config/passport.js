@@ -56,18 +56,18 @@ module.exports = function(passport) {
                 } else {
                     // if there is no user with that username
                     // create the user
-                    var newUserMysql = {
-                        username: username,
-                        password: bcrypt.hashSync(password, null, null)// use the generateHash function in our user model
-                    };
+                    var newUserMysql = new Object();
+                    newUserMysql.username = username;
+                    newUserMysql.email    = req.body.email;
+                    newUserMysql.password = bcrypt.hashSync(password, null, null);
 
-                    var insertQuery = "INSERT INTO tblUsers ( username, password) values (?,?,?)";
-
-                    connection.query(insertQuery,[newUserMysql.username, newUserMysql.password],function(err, rows) {
+                    var insertQuery = "INSERT INTO tblUsers ( email, password, username ) values ('" + newUserMysql.email +"','"+ newUserMysql.password +"','"+ newUserMysql.username +"')";
+                    console.log(insertQuery);
+                    connection.query(insertQuery,function(err,rows){
                         newUserMysql.id = rows.insertId;
-
+                        
                         return done(null, newUserMysql);
-                    });
+                    }); 
                 }
             });
         })
