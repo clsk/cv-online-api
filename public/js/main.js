@@ -17,23 +17,6 @@ $('#btn-borrar-cuenta').click(function() {
     console.log('Borrar cuenta');
 
     $('#modal-borrar-cuenta').modal('hide');
-
-    var userid = $("#HiddenUserID").val();
-
-    var parametros = {
-        userID : userid,
-    }
-
-    $.ajax({
-        data:  parametros,
-        url:   'deleteAccountMethod',
-        type:  'post',
-        success:  function (response) {
-            var url = "/index";    
-            $(location).attr('href',url);
-        }
-    });
-
     $('#inputClaveActual').val("");
     $('#inputClaveNueva').val("");
     $('#inputConfirmacionClaveNueva').val("");

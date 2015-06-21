@@ -51,21 +51,23 @@
     </div>
     <div class="modal fade" id="modal-borrar-cuenta">
       <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Borrar Cuenta</h4>
-          </div>
-          <div class="modal-body">
-                  <div class="form-group">
-                      <p> Esta seguro que desea eliminar su cuenta? <b> nota: </b> Esta acción no se puede deshacer. </p> 
-                  </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default"data-dismiss="modal">Cancelar</button>
-            <button type="button" id="btn-borrar-cuenta" class="btn btn-primary btn-ok">Continuar</button>
+        <form id="delete-account-form" action="/deleteAccount" method="post" role="form" style="display: block;">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Borrar Cuenta</h4>
+            </div>
+            <div class="modal-body">
+                    <div class="form-group">
+                        <p> Esta seguro que desea eliminar su cuenta? <b> nota: </b> Esta acción no se puede deshacer. </p> 
+                    </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default"data-dismiss="modal">Cancelar</button>
+              <button type="submit" id="btn-borrar-cuenta" class="btn btn-primary btn-ok">Continuar</button>
 
-          </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>

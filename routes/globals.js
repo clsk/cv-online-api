@@ -4,8 +4,8 @@ module.exports = function(app, passport) {
 	// =====================================
 	// HOME PAGE (with login links) ========
 	// =====================================
-	app.get('/home', function(req, res, next) {
-	  res.render('home',  { title: 'Express', isAuthenticated: isLoggedIn });
+	app.get('/home', isLoggedIn, function(req, res, next) {
+	  res.render('home',  { title: 'Express', isAuthenticated: req.isAuthenticated() });
 	});
 
 	app.get('/index', function(req, res, next) {
@@ -14,7 +14,7 @@ module.exports = function(app, passport) {
 
 	/* GET index page. */
 	app.get('/', function(req, res, next) {
-	  res.render('index', { title: 'Express', isAuthenticated: isLoggedIn });
+	  res.render('index', { title: 'Express', isAuthenticated: req.isAuthenticated() });
 	});
 
 	// =====================================
@@ -53,9 +53,30 @@ module.exports = function(app, passport) {
 	// =====================================
 	app.get('/logout', function(req, res) {
 		req.logout();
+		req.session.destroy();
 		res.redirect('/');
 	});
+
+	// =====================================
+	// DELETE ACCOUNT ======================
+	// =====================================
+	// process the signup form
+	app.post('/deleteAccount', passport.authenticate('local-delete', {
+		successRedirect : '/logout', // redirect to the secure profile section
+		failureRedirect : '/logout', // redirect back to the signup page if there is an error
+		failureFlash : true // allow flash messages
+	}));
 };
+
+function isAuthenticated (req, res, next) {
+	// if user is authenticated in the session, carry on
+	if (req.isAuthenticated())
+		return true;
+
+	// if they 
+	return false;
+}
+
 
 // route middleware to make sure
 function isLoggedIn(req, res, next) {
