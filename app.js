@@ -10,11 +10,6 @@ var session      = require('express-session');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 
-// var routes = require('./routes/index');
-// var users = require('./routes/users');
-// var home = require('./routes/home');
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -23,6 +18,8 @@ app.set('view engine', 'ejs');
 // set up our express application
 app.use(cookieParser()); // read cookies (needed for auth)
 app.set('view engine', 'ejs'); // set up ejs for templating
+
+require('./config/passport')(passport); // pass passport for configuration
 // required for passport
 app.use(session({ 
     // genid: function(req) {
