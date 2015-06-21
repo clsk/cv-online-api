@@ -1,0 +1,1 @@
+nodejs mysql connector: https://github.com/felixge/node-mysql/
