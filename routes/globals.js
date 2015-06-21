@@ -5,7 +5,7 @@ module.exports = function(app, passport) {
 	// HOME PAGE (with login links) ========
 	// =====================================
 	app.get('/home', function(req, res, next) {
-	  res.render('home',  { title: 'Express', isAuthenticated: isLoggedIn });
+	  res.render('home',  { title: 'Express', isAuthenticated: true/*isLoggedIn */});
 	});
 
 	// res.render('userlist', {

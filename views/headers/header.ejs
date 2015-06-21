@@ -105,11 +105,14 @@
             </ul>
           </div>
         <%} else {%>
-          <li>
-              <a>
-                  <i class="fa fa-sign-out"></i> Registrarse 
-              </a>
-          </li>
+        <div>
+          <nav class="nav navbar-nav pull-right" role="navigation">
+            <!-- Navbar Right Menu -->
+            <a href="/" class="register-login" id="register-login-button">
+              <span class="glyphicon glyphicon-lock " aria-hidden="true"></span> Iniciar Sesión/Registrarme
+            </a>
+          </nav>
+        </div>
         <%}%>
       </nav>
     </header>
