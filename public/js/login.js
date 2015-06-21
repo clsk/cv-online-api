@@ -5,7 +5,8 @@ $(function() {
     $("#register-form").fadeOut(100);
     $('#register-form-link').removeClass('active');
     $(this).addClass('active');
-    e.preventDefault();
+
+    return false;
   });
 
   $('#register-form-link').click(function(e) {
@@ -13,11 +14,13 @@ $(function() {
     $("#login-form").fadeOut(100);
     $('#login-form-link').removeClass('active');
     $(this).addClass('active');
-    e.preventDefault();
+
+    return false;
   });
 
   $('#register-login-button').click(function(e){
-    e.preventDefault();
     $('#register-login-modal').modal('show');
+    
+    return false;
   });
 });

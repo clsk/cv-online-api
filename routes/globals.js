@@ -5,7 +5,11 @@ module.exports = function(app, passport) {
 	// HOME PAGE (with login links) ========
 	// =====================================
 	app.get('/home', function(req, res, next) {
-	  res.render('home',  { title: 'Express', isAuthenticated: true/*isLoggedIn */});
+	  res.render('home',  { title: 'Express', isAuthenticated: isLoggedIn });
+	});
+
+	app.get('/index', function(req, res, next) {
+	  res.redirect('/');
 	});
 
 	/* GET index page. */
@@ -25,11 +29,11 @@ module.exports = function(app, passport) {
         function(req, res) {
             console.log("hello");
 
-            if (req.body.remember) {
-              req.session.cookie.maxAge = 1000 * 60 * 3;
-            } else {
-              req.session.cookie.expires = false;
-            }
+            // if (req.body.remember) {
+            //   req.session.cookie.maxAge = 1000 * 60 * 3;
+            // } else {
+            //   req.session.cookie.expires = false;
+            // }
         res.redirect('/');
     });
 
@@ -61,5 +65,5 @@ function isLoggedIn(req, res, next) {
 		return next();
 
 	// if they aren't redirect them to the home page
-	res.redirect('/');
+	res.redirect('/index');
 }
