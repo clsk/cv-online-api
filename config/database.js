@@ -7,6 +7,6 @@ module.exports = {
         'password': '',
         'database': 'Resumes'
     },
-	'database': 'Resumes',
+    'database': 'Resumes',
     'users_table': 'Users'
 };
