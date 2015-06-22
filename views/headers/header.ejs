@@ -51,7 +51,7 @@
     </div>
     <div class="modal fade" id="modal-borrar-cuenta">
       <div class="modal-dialog">
-        <form id="delete-account-form" action="/deleteAccount" method="post" role="form" style="display: block;">
+        <form id="delete-account-form" action="/users/deleteAccount" method="post" role="form" style="display: block;">
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -75,50 +75,35 @@
       <a href="/" class="logo">Online CV</a>
       <nav class="navbar navbar-static-top" role="navigation">
         <!-- Navbar Right Menu -->
-        <%if (isAuthenticated == true) {%>
-          <div class="navbar-custom-menu">
-            <ul class="nav navbar-nav">
-              <!-- User Account: style can be found in dropdown.less -->
-              <li class="dropdown user user-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
-                  <span class="hidden-xs">Alexander Pierce</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <!-- User image -->
-                  <li class="user-header">
-                    <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
-                    <p>
-                      Alexander Pierce - Web Developer
-                      <small>Member since Nov. 2012</small>
-                    </p>
-                  </li>
-                  <!-- Menu Footer-->
-                  <li class="user-footer">
-                    <div class="pull-left">
-                      <a id="change-password" href="#" class="btn btn-default btn-flat" data-toggle="modal"data-target="#modal-cambiar-clave">Cambiar &#10; Contrase&ntilde;a</a>
-                    </div>
-                    <div class="pull-right">
-                      <a id="delete-account" href="#" class="btn btn-default btn-flat" data-toggle="modal"data-target="#modal-borrar-cuenta">Borrar Cta</a>
-                    </div>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        <%} else {%>
-        <div>
-          <nav class="nav navbar-nav pull-right" role="navigation">
-            <!-- Navbar Right Menu -->
-            <a href="/" class="register-login" id="register-login-button">
-              <span class="glyphicon glyphicon-lock " aria-hidden="true"></span> Iniciar Sesión/Registrarme
-            </a>
-          </nav>
+        <div class="navbar-custom-menu">
+          <ul class="nav navbar-nav">
+            <!-- User Account: style can be found in dropdown.less -->
+            <li class="dropdown user user-menu">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
+                <span class="hidden-xs">Alexander Pierce</span>
+              </a>
+              <ul class="dropdown-menu">
+                <!-- User image -->
+                <li class="user-header">
+                  <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
+                  <p>
+                  <%= user.name %> <%= user.lastname %></p>
+                </li>
+                <!-- Menu Footer-->
+                <li class="user-footer">
+                  <div class="pull-left">
+                    <a id="change-password" href="#" class="btn btn-default btn-flat" data-toggle="modal"data-target="#modal-cambiar-clave">Cambiar &#10; Contrase&ntilde;a</a>
+                  </div>
+                  <div class="pull-right">
+                    <a id="delete-account" href="#" class="btn btn-default btn-flat" data-toggle="modal"data-target="#modal-borrar-cuenta">Borrar Cta</a>
+                  </div>
+                </li>
+              </ul>
+            </li>
+          </ul>
         </div>
-        <%}%>
       </nav>
     </header>
-    <%if (isAuthenticated == true) {%>
-      <%- include('../partials/side-bar'); %>
-    <%}%>
+    <%- include('../partials/side-bar'); %>
     <div class="content-wrapper">

@@ -17,34 +17,36 @@ app.set('view engine', 'ejs');
 
 // set up our express application
 app.use(cookieParser()); // read cookies (needed for auth)
-app.set('view engine', 'ejs'); // set up ejs for templating
 
-require('./config/passport')(passport); // pass passport for configuration
 // required for passport
 app.use(session({ 
     // genid: function(req) {
     //   return genuuid() // use UUIDs for session IDs
     // },
-    secret: 'ilovescotchscotchyscotchscotch', // session secret
+    secret: 'cvonlinehasher', // session secret
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
 })); 
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
+require('./src/init-passport')(passport);
+
 // uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use('/', routes);
-// app.use('/home', home);
-// app.use('/users', users);
+var routes = require('./routes/index');
+var users = require('./routes/users');
+var home = require('./routes/home');
 
-require('./routes/globals.js')(app, passport);
+app.use('/', routes);
+app.use('/home', home);
+app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

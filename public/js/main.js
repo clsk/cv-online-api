@@ -1,5 +1,5 @@
 $('#btn-guardar-clave').click(function() {
-    console.log('cambionado contrasena');
+    console.log('cambiando contrasena');
     /* 
      * - Validar input
      * - Mandar request para cambiar clave

@@ -4,12 +4,13 @@ create database if not exists Resumes;
 
 use Resumes;
 
-drop table if exists tblUsers;
+drop table if exists Users;
 
-create table if not exists tblUsers(
-   userId integer primary key auto_increment,
-   Username varchar (50),
-   Email varchar(100) unique,
-   Password varchar(100),
-   Active  tinyint(1) default 1
+create table if not exists Users(
+   id integer primary key auto_increment,
+   email varchar(100) unique,
+   password varchar(100),
+   name varchar(100),
+   lastname varchar(100),
+   active  tinyint(1) default 1
 )engine=innodb;
