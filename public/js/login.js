@@ -23,4 +23,11 @@ $(function() {
     
     return false;
   });
+
+  $('.forgot-password').click(function(e){
+  $('#register-login-modal').modal('hide');
+    $('#modal-forgot-password').modal('show');
+
+    return false;
+  });
 });
