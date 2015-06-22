@@ -145,3 +145,7 @@
   width: 50%;
   margin-left: 146px;
 } 
+
+a.btn-header {
+    width: 100%;
+}

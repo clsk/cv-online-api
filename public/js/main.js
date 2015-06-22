@@ -9,11 +9,8 @@ $('#btn-guardar-clave').click(function() {
 });
 
 $('#btn-borrar-cuenta').click(function() {
-    console.log('Borrar cuenta');
-
     $('#modal-borrar-cuenta').modal('hide');
     $('#inputClaveActual').val("");
     $('#inputClaveNueva').val("");
     $('#inputConfirmacionClaveNueva').val("");
-
 });
