@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+var bcrypt = require('bcrypt-nodejs');
 
 /* GET users listing. */
 //router.get('/', function(req, res, next) {
@@ -33,6 +34,29 @@ router.get('/logout', function(req, res) {
     req.session.destroy();
     res.redirect('/');
 });
+
+router.post('/changePassword', function(req, res) {
+    var query = "SELECT * FROM Users where email = ?";
+    GLOBAL.connection.query(query, [req.user.email], function(err, rows) {
+        if (err) {
+            req.flash('info', 'Error ejecutando query de MySQL');
+            res.redirect('/home');
+        } else if (!rows) {
+            req.fash('info', 'Usuario o clave invalido!');
+        } else {
+            if (!bcrypt.compareSync(req.body.password, rows[0].password)) {
+                req.fash('info', 'Usuario o clave invalido!');
+            } else {
+               var q = "UPDATE Users set password = ? where id = ?";
+               GLOBAL.connection.query(q, [bcrypt.hashSync(req.body.newpassword, null, null), req.user.id], function(err, rows) {
+                   res.redirect('/home');
+               });
+            }
+        }
+
+    });
+});
+
 
 router.post('/deleteAccount', function(req, res) {
     // find a user whose email is the same as the forms email

@@ -1,16 +1,11 @@
 $('#btn-guardar-clave').click(function() {
-    console.log('cambiando contrasena');
-    /* 
-     * - Validar input
-     * - Mandar request para cambiar clave
-     * - Confirmar que cambio se realizo
-     */
-    alert('Su clave fue cambiada exitosamente');
-    $('#modal-cambiar-clave').modal('hide');
-    $('#inputClaveActual').val("");
-    $('#inputClaveNueva').val("");
-    $('#inputConfirmacionClaveNueva').val("");
+    if ($('#newpassword').val() != $('#confirmnewpassword').val()) {
+        alert("No se pudo confirmar la clave");
+        $('#inputClaveActual').val("");
+        return false;
+    }
 
+    $('#change-password-form').submit();
 });
 
 $('#btn-borrar-cuenta').click(function() {

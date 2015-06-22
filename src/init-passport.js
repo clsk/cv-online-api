@@ -23,7 +23,7 @@ module.exports = function(passport) {
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        GLOBAL.connection.query("SELECT email,name,lastname FROM Users WHERE id = ? ",[id], function(err, rows){
+        GLOBAL.connection.query("SELECT id,email,name,lastname FROM Users WHERE id = ? ",[id], function(err, rows){
             done(err, rows[0]);
         });
     });
@@ -64,6 +64,7 @@ module.exports = function(passport) {
 
                     GLOBAL.connection.query(insertQuery,[user.email,user.password,user.name,user.lastname], function(err,rows){
                         user.id = rows.insertId;
+                        delete user.password;
                         return done(null, user);
                     });
                 }

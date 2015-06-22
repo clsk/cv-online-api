@@ -18,33 +18,31 @@
             <h4 class="modal-title">Cambiar Contrase&ntilde;a</h4>
           </div>
           <div class="modal-body">
-              <form class="form-horizontal">
+              <form id="change-password-form" class="form-horizontal" action="users/changePassword" method="post" role="form">
                   <div class="form-group">
-                      <label for="inputClaveActual" class="col-sm-4
+                      <label for="password" class="col-sm-4
                           control-label">Contrase&ntilde;a Actual</label>
                       <div class="col-sm-8">
-                          <input type="password" class="form-control" id="inputClaveActual" placeholder="Clave Actual" autocomplete="off">
+                          <input type="password" class="form-control" id="password" name="password" placeholder="Clave Actual" autocomplete="off">
                       </div>
                   </div>
                   <div class="form-group">
-                      <label for="inputClaveNueva" class="col-sm-4 control-label">Contrase&ntilde;a Nueva</label>
+                      <label for="newpassword" class="col-sm-4 control-label">Contrase&ntilde;a Nueva</label>
                       <div class="col-sm-8">
-                          <input type="password" class="form-control" id="inputClaveNueva" placeholder="Clave Nueva" autocomplete="off">
+                          <input type="password" class="form-control" id="newpassword" name="newpassword" placeholder="Clave Nueva" autocomplete="off">
                       </div>
                   </div>
                   <div class="form-group">
-                      <label for="inputConfirmacionClaveNueva"
-                          class="col-sm-4
-                          control-label">Confirmar Nueva Contrase&ntilde;a</label>
+                      <label for="confirmnewpassword" class="col-sm-4 control-label">Confirmar Nueva Contrase&ntilde;a</label>
                       <div class="col-sm-8">
-                          <input type="password" class="form-control" id="inputConfirmacionClaveNueva" placeholder="Confirmacion Clave Nueva" autocomplete="off">
+                          <input type="password" class="form-control" id="confirmnewpassword" name="confirmnewpassword" placeholder="Confirmacion Clave Nueva" autocomplete="off">
                       </div>
                   </div>
               </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default"data-dismiss="modal">Cancelar</button>
-            <button type="button" id="btn-guardar-clave" class="btn btn-primary btn-ok">Guardar Cambios</button>
+            <button type="submit" id="btn-guardar-clave" class="btn btn-primary btn-ok">Guardar Cambios</button>
           </div>
         </div>
       </div>
