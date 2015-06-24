@@ -25,6 +25,8 @@
   /*margin-top:1px;*/
   color: white;
   min-height: 40px;
+  bottom: 0;
+  width: 100%;
 }
 
 .register-login{
@@ -149,3 +151,4 @@
 a.btn-header {
     width: 100%;
 }
+
