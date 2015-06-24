@@ -100,7 +100,7 @@ router.post('/forgotPassword', function(req, res) {
 
 
 
-router.post('/deleteAccount', auth.isLoggedIn function(req, res) {
+router.post('/deleteAccount', auth.isLoggedIn,  function(req, res) {
     // find a user whose email is the same as the forms email
     // we are checking to see if the user trying to login already exists
     GLOBAL.connection.query("SELECT * FROM Users WHERE email = ?", [req.user.email], function(err, rows) {
