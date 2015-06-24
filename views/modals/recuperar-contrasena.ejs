@@ -8,18 +8,31 @@ alert('hola mundo');
 <div class="modal fade" id="modal-forgot-password">
 	<div class="modal-dialog">
 		<div class="modal-content">
+
+  <form id="recuperar-account-form" action="/users/RecoverAccount" method="post" role="form" >
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h4 class="modal-title">Recuperar Contraseña</h4>
 			</div>
 			<div class="modal-body">
+
+			
+
 			    <label for="email">Correo</label>
 				<input type="text" id="email"/>	
+
+				
+				
+
+
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">OK</button>
+				<button type="submit" class="btn btn-primary">OK</button>
 			</div>
 		</div>
+
+          </form>
+
 	</div>
 </div>

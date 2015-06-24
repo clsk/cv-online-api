@@ -16,8 +16,8 @@ $('#btn-borrar-cuenta').click(function() {
 });
 
 /*Probando*/
-$('#btn-recuperar-cuenta').click(function() {
+/*$('#btn-recuperar-cuenta').click(function() {
     
 
 
-});
+});*/
