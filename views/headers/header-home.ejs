@@ -2,21 +2,48 @@
 <html>
 <head>
   <title><%= title %></title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel='stylesheet' href='/dist/css/AdminLTE.min.css' />
   <link rel='stylesheet' href='/dist/css/skins/skin-blue.min.css' />
   <link rel='stylesheet' href='/bootstrap/css/bootstrap.min.css' />
   <link rel='stylesheet' href='/stylesheets/style.css' />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body class="skin-blue sidebar-mini">
   <div class="skin-blue sidebar-mini">
-    <header class="main-header home-header">
-      <a href="/" class="logo">Online CV</a>
-      <nav class="navbar navbar-static-top home-nav" role="navigation">
-        <!-- Navbar Right Menu -->
-        <a href="/" class="register-login" id="register-login-button">
-          <span class="glyphicon glyphicon-lock " aria-hidden="true"></span> Inicie Sesion/Registrarme
-        </a>
-      </nav>
-    </header>
-  </div>
-  <div>
+   <header class="main-header">
+    <a href="/" class="logo">Online CV</a>
+    <nav class="navbar navbar-static-top" role="navigation">
+      <!-- Navbar Right Menu -->
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
+              <span class="hidden-xs"><%= user.name %> <%= user.lastname %></span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="">
+                  <a id="change-password" href="#" class="btn btn-default btn-flat btn-header" data-toggle="modal"data-target="#modal-cambiar-clave">Cambiar &#10; Contrase&ntilde;a</a>
+                </div>
+                <div class="">
+                  <a id="delete-account btn-header" href="#" class="btn btn-default btn-flat btn-header" data-toggle="modal"data-target="#modal-borrar-cuenta">Borrar Cuenta</a>
+                </div>
+                <div class="">
+                  <a id="logout" href="/users/logout" class="btn btn-default btn-flat btn-header">Logout</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+</div>
+<%- include('../partials/side-bar'); %>
+<div class="content-wrapper">
