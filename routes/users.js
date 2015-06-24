@@ -2,6 +2,11 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var bcrypt = require('bcrypt-nodejs');
+var nodemailer = require('nodemailer');
+var passwordGenerator = require('password-generator');
+var mailConfig = require('../config/mail');
+
+var auth = require('../src/auth');
 
 /* GET users listing. */
 //router.get('/', function(req, res, next) {
@@ -35,7 +40,7 @@ router.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-router.post('/changePassword', function(req, res) {
+router.post('/changePassword', auth.isLoggedIn, function(req, res) {
     var query = "SELECT * FROM Users where email = ?";
     GLOBAL.connection.query(query, [req.user.email], function(err, rows) {
         if (err) {
@@ -53,12 +58,49 @@ router.post('/changePassword', function(req, res) {
                });
             }
         }
+    });
+});
 
+router.post('/forgotPassword', function(req, res) {
+    var email = req.body.email;
+    var query = "SELECT * FROM Users where email = ?";
+    GLOBAL.connection.query(query, [email], function(err, rows) {
+        if (err) {
+            req.flash('info', 'Error ejecutando query de MySQL');
+            res.redirect('/');
+        } else if (!rows) {
+            req.fash('info', 'Usuario o clave invalido!');
+        } else {
+            var newPassword = passwordGenerator(12, false);
+            var q = "UPDATE Users set password = ? where email = ?";
+            GLOBAL.connection.query(q, [bcrypt.hashSync(newPassword, null, null), email], function(err, rows) {
+               var transporter = nodemailer.createTransport(mailConfig);
+               console.log('email:  ' + email);
+               var mailOptions = {
+                   from: mailConfig.fromAddress, // sender address
+                   to: email, // list of receivers
+                   subject: 'CV Online Service Nueva Clave', // Subject line
+                   text: 'Se ha generado la siguiente clave para usted ' + newPassword, // plaintext body
+                   html: '<b>Se ha generado la siguiente clave para usted: ' + newPassword + '</b>' // html body
+               };
+
+               // send mail with defined transport object
+               transporter.sendMail(mailOptions, function(error, info){
+                   if(error){
+                       return console.log(error);
+                   }
+                   console.log('Message sent: ' + info.response);
+
+                   res.redirect('/');
+               });
+           });
+        }
     });
 });
 
 
-router.post('/deleteAccount', function(req, res) {
+
+router.post('/deleteAccount', auth.isLoggedIn function(req, res) {
     // find a user whose email is the same as the forms email
     // we are checking to see if the user trying to login already exists
     GLOBAL.connection.query("SELECT * FROM Users WHERE email = ?", [req.user.email], function(err, rows) {

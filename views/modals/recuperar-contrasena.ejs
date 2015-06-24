@@ -1,7 +1,5 @@
 
 <!--<script type="text/javascript">
-	
-alert('hola mundo');
 
 </script> -->
 
@@ -12,14 +10,17 @@ alert('hola mundo');
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h4 class="modal-title">Recuperar Contraseña</h4>
 			</div>
-			<div class="modal-body">
-			    <label for="email">Correo</label>
-				<input type="text" id="email"/>	
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">OK</button>
-			</div>
+
+            <form id="forgot-password-form" class="form-horizontal" action="users/forgotPassword" method="post" role="form">
+                <div class="modal-body">
+                    <label for="email">Correo</label>
+                    <input type="text" id="email" name="email"/>	
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary btn-ok">OK</button>
+                </div>
+            </form>
 		</div>
 	</div>
 </div>

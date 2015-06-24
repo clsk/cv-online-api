@@ -19,7 +19,8 @@
     "express-session" : "*" ,
     "logger" : "*" ,
     "passport" : "*" ,
-    "passport-local" : "*" 
-
+    "passport-local" : "*",
+    "nodemailer" : "~1.3.4",
+    "password-generator" : "~1.0.0"
   }
 }
