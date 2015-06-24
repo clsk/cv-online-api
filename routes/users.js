@@ -48,9 +48,11 @@ router.post('/changePassword', auth.isLoggedIn, function(req, res) {
             res.redirect('/home');
         } else if (!rows) {
             req.fash('info', 'Usuario o clave invalido!');
+            res.redirect('/home');
         } else {
             if (!bcrypt.compareSync(req.body.password, rows[0].password)) {
-                req.fash('info', 'Usuario o clave invalido!');
+                req.flash('info', 'Usuario o clave invalido!');
+                res.redirect('/home');
             } else {
                var q = "UPDATE Users set password = ? where id = ?";
                GLOBAL.connection.query(q, [bcrypt.hashSync(req.body.newpassword, null, null), req.user.id], function(err, rows) {
@@ -70,12 +72,12 @@ router.post('/forgotPassword', function(req, res) {
             res.redirect('/');
         } else if (!rows) {
             req.fash('info', 'Usuario o clave invalido!');
+            res.redirect('/');
         } else {
             var newPassword = passwordGenerator(12, false);
             var q = "UPDATE Users set password = ? where email = ?";
             GLOBAL.connection.query(q, [bcrypt.hashSync(newPassword, null, null), email], function(err, rows) {
                var transporter = nodemailer.createTransport(mailConfig);
-               console.log('email:  ' + email);
                var mailOptions = {
                    from: mailConfig.fromAddress, // sender address
                    to: email, // list of receivers
@@ -89,7 +91,6 @@ router.post('/forgotPassword', function(req, res) {
                    if(error){
                        return console.log(error);
                    }
-                   console.log('Message sent: ' + info.response);
 
                    res.redirect('/');
                });
