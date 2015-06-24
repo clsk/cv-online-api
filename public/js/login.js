@@ -23,6 +23,7 @@ $(function() {
     
     return false;
   });
+  /**Parte de olvide la contraseña*/
 
   $('.forgot-password').click(function(e){
   $('#register-login-modal').modal('hide');

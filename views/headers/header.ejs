@@ -47,6 +47,7 @@
         </div>
       </div>
     </div>
+
     <div class="modal fade" id="modal-borrar-cuenta">
       <div class="modal-dialog">
         <form id="delete-account-form" action="/users/deleteAccount" method="post" role="form" style="display: block;">
@@ -69,6 +70,37 @@
         </div>
       </div>
     </div>
+
+
+<!--Probando-->
+    <div class="modal fade" id="modal-recuperar-cuenta">
+      <div class="modal-dialog">
+        <form id="recuperar-account-form" action="/users/RecoverAccount" method="post" role="form" style="display: block;">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Recuperar Cuenta</h4>
+            </div>
+            <div class="modal-body">
+                    <!--<div class="form-group">
+                        <p> Esta seguro que desea eliminar su cuenta? <b> nota: </b> Esta acción no se puede deshacer. </p> 
+                    </div> -->
+                   
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default"data-dismiss="modal">Cancelar</button>
+              <button type="submit" id="btn-recuperar-cuenta" class="btn btn-primary btn-ok">Continuar</button>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
     <header class="main-header">
       <a href="/" class="logo">Online CV</a>
       <nav class="navbar navbar-static-top" role="navigation">
@@ -90,6 +122,15 @@
                   <div class="">
                     <a id="delete-account btn-header" href="#" class="btn btn-default btn-flat btn-header" data-toggle="modal"data-target="#modal-borrar-cuenta">Borrar Cuenta</a>
                   </div>
+                    <!--Parte de la prueba--
+                  <div class="">
+                    
+                    
+
+
+                  </div>
+                  Fin de Parte de la prueba-->
+
                   <div class="">
                     <a id="logout" href="/users/logout" class="btn btn-default btn-flat btn-header">Logout</a>
                   </div>

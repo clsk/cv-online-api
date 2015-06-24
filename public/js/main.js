@@ -14,3 +14,10 @@ $('#btn-borrar-cuenta').click(function() {
     $('#inputClaveNueva').val("");
     $('#inputConfirmacionClaveNueva').val("");
 });
+
+/*Probando*/
+$('#btn-recuperar-cuenta').click(function() {
+    
+
+
+});

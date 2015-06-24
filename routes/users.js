@@ -55,6 +55,7 @@ router.post('/changePassword', function(req, res) {
         }
 
     });
+
 });
 
 
@@ -75,7 +76,22 @@ router.post('/deleteAccount', function(req, res) {
             });
         }
     });
+
 });
+//Probando recover account 
+router.post('/RecoverAccount', function(req, res) {
+    // find a user whose email is the same as the forms email
+    // we are checking to see if the user trying to login already exists
+    GLOBAL.connection.query("SELECT * FROM Users WHERE email = ?", [req.user.email], function(err, rows) {
+        if (err)
+            return done(err);
+        if (!rows.length) {
+            return res.redirect('home', req.flash('info', 'That user do not exists.'));
+        } else {
+            alert();
+            });
+        }
+    });
 
 
 module.exports = router;
