@@ -17,12 +17,9 @@
   text-align: right;
 }
 
-#copyright-text {
-    /*margin-left: 30%;*/
-}
 .footer{
   background-color: #367fa9;
-  /*margin-top:1px;*/
+ /* width: 100%;*/
   color: white;
   min-height: 40px;
 }
