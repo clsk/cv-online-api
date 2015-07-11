@@ -19,6 +19,9 @@
         <li class="view-cv"><a href="#"><span>Ver CV</span></a><</li>
         <li class="edit-professional-info"><a href="#"><span>Editar Informacion Profesional</span></a><</li>
         <li class="edit-template"><a href="#"><span>Cambiar Tema</span></a><</li>
+        <% if (user.is_admin) { %>
+            <li class="edit-template"><a href="/admin/edit_template"><span>Editar Tema</span></a></li>
+        <% } %>
       </ul><!-- /.sidebar-menu -->
 
     </div><!-- /.sidebar -->

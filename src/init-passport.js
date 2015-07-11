@@ -23,7 +23,7 @@ module.exports = function(passport) {
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        GLOBAL.connection.query("SELECT id,email,name,lastname FROM Users WHERE id = ? ",[id], function(err, rows){
+        GLOBAL.connection.query("SELECT id,email,name,lastname,is_admin FROM Users WHERE id = ? ",[id], function(err, rows){
             done(err, rows[0]);
         });
     });

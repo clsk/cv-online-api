@@ -4,7 +4,6 @@ module.exports = {
         if (req.isAuthenticated())
             return true;
 
-        // if they 
         return false;
     },
 
@@ -17,6 +16,17 @@ module.exports = {
             return next();
 
         // if they aren't redirect them to the home page
+        req.flash('info', 'debe estar autenticado para poder hacer eso');
+        res.redirect('/');
+    },
+
+    isLoggedInAsAdmin: function(req, res, next) {
+        // if user is authenticated in the session, carry on
+        if (req.isAuthenticated() && req.user.is_admin)
+            return next();
+
+        // if they aren't redirect them to the home page
+        req.flash('info', 'debe estar autenticado como Administrador para poder hacer eso ' + req.user);
         res.redirect('/');
     }
 };
