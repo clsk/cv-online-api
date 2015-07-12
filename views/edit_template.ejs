@@ -4,20 +4,28 @@
 <link rel="stylesheet" type="text/css" href="/plugins/codemirror/theme/solarized.css"/>
 <%- include('partials/side-bar', {user: user, activeMenuItem: 'edit-template'}); %>
 
-<form>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
+<div class="row">
+    <iframe id="problem-preview-iframe" style="text-align: center; margin-top: 30px; width: 650px; height: 587px; background-color: lightgray;">
+        <h2>Problem Preview</h2>
+    </iframe>
+</div>
+<form id="edit-template-form">
+    <h3>HTML</h3>
+    <div class="row code-row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
             <textarea name="html-text" id="html-text"></textarea>
         </div>
-        <div class="col-md-2"></div>
+        <div class="col-md-1"></div>
     </div>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
+
+    <h3>CSS</h3>
+    <div class="row code-row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
             <textarea name="css-text" id="css-text"></textarea>
         </div>
-        <div class="col-md-2"></div>
+        <div class="col-md-1"></div>
     </div>
     </div>
 </form>

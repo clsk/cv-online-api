@@ -11,7 +11,7 @@
 }
 
 .footer-details{
-  margin-top: 10px;
+  /*margin-top: 10px;*/
 }
 .terms-and-politics{
   text-align: right;
@@ -22,11 +22,10 @@
 }
 .footer{
   background-color: #367fa9;
-  /*margin-top:1px;*/
+  padding-top:5px;
   color: white;
-  min-height: 40px;
   bottom: 0;
-  width: 100%;
+  /*width: 100%;*/
 }
 
 .register-login{
@@ -150,5 +149,14 @@
 
 a.btn-header {
     width: 100%;
+}
+
+.code-row {
+    padding: 10px 0;
+}
+
+#edit-template-form h3 {
+    text-align: center;
+
 }
 
