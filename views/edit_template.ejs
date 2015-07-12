@@ -5,11 +5,19 @@
 <%- include('partials/side-bar', {user: user, activeMenuItem: 'edit-template'}); %>
 
 <div class="row">
-    <iframe id="problem-preview-iframe" style="text-align: center; margin-top: 30px; width: 650px; height: 587px; background-color: lightgray;">
-        <h2>Problem Preview</h2>
-    </iframe>
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <iframe id="preview-iframe" style="">
+        </iframe>
+    </div>
+    <div class="col-md-1"></div>
 </div>
 <form id="edit-template-form">
+    <div class="row">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-primary btn-sm" id="edit-template-reload-btn">Reload Code</button>
+        </div>
+    </div>
     <h3>HTML</h3>
     <div class="row code-row">
         <div class="col-md-1"></div>
@@ -27,7 +35,6 @@
         </div>
         <div class="col-md-1"></div>
     </div>
-    </div>
 </form>
 
 <%- include('footer'); %>
@@ -37,6 +44,14 @@
 <script src="/plugins/codemirror/mode/xml/xml.js" type="text/javascript"></script>
 <script src="/plugins/codemirror/mode/htmlmixed/htmlmixed.js" type="text/javascript"></script>
 <script type="text/javascript">
-    var htmlCodeMirror = CodeMirror.fromTextArea(document.getElementById("html-text"), {lineNumbers: true, mode: "htmlmixed", theme: "ambiance" });
-    var cssCodeMirror = CodeMirror.fromTextArea(document.getElementById("css-text"), {lineNumbers: true, mode: "css", theme: "ambiance"});
+    htmlCodeMirror = CodeMirror.fromTextArea(document.getElementById("html-text"), {lineNumbers: true, mode: "htmlmixed", theme: "ambiance" });
+    cssCodeMirror = CodeMirror.fromTextArea(document.getElementById("css-text"), {lineNumbers: true, mode: "css", theme: "ambiance"});
+
+    $('#edit-template-reload-btn').click(function() {
+        var doc = document.getElementById('preview-iframe').contentWindow.document;
+        var body = $('body', doc);
+        body.html(htmlCodeMirror.getValue());
+        var head = $('head', doc);
+        head.html('<title>Test Template</title><style>' + cssCodeMirror.getValue() + '</style>');
+    });
 </script>
