@@ -169,5 +169,13 @@ a.btn-header {
 
 #edit-template-reload-btn {
     position: absolute;
-    right: 9.7%;
+    left: 19%;
+    width: 100px
 }
+
+#edit-template-save-btn {
+    position: absolute;
+    right: 19.5%;
+    width: 100px;
+}
+

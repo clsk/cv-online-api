@@ -14,9 +14,13 @@
 </div>
 <form id="edit-template-form">
     <div class="row">
-        <div class="col-md-12">
-            <button type="button" class="btn btn-primary btn-sm" id="edit-template-reload-btn">Reload Code</button>
+        <div class="col-md-6">
+            <button type="button" class="btn btn-primary btn-sm" id="edit-template-reload-btn">Preview</button>
         </div>
+        <div class="col-md-6">
+            <button type="button" class="btn btn-primary btn-sm" id="edit-template-save-btn">Save</button>
+        </div>
+
     </div>
     <h3>HTML</h3>
     <div class="row code-row">
@@ -47,12 +51,31 @@
     htmlCodeMirror = CodeMirror.fromTextArea(document.getElementById("html-text"), {lineNumbers: true, mode: "htmlmixed", theme: "ambiance" });
     cssCodeMirror = CodeMirror.fromTextArea(document.getElementById("css-text"), {lineNumbers: true, mode: "css", theme: "ambiance"});
 
+    var cv = <%- JSON.stringify(cv) %>;
+    $(document).ready(function() {
+        iframeDoc = document.getElementById('preview-iframe').contentWindow.document;
+    });
+
+    function fillCV(cv) {
+        var e;
+        for (i in cv.fields) {
+            e = iframeDoc.getElementById(cv.fields[i].name);
+            if (e) {
+                e.innerHTML = cv.fields[i].value;
+            }
+        }
+    }
+
     $('#edit-template-reload-btn').click(function() {
         var name = '<%= cv.fields[0].value %> <%= cv.fields[1].value %>';
-        var doc = document.getElementById('preview-iframe').contentWindow.document;
-        var body = $('body', doc);
-        body.html(htmlCodeMirror.getValue());
-        var head = $('head', doc);
-        head.html('<title>' + name + '</title><style>' + cssCodeMirror.getValue() + '</style>');
+        var body = $('body', iframeDoc);
+
+
+        var bootstrapjs = '<script src="/bootstrap/js/bootstrap.min.js" type="text/javascript"></sc' + 'ript>';
+        body.html(htmlCodeMirror.getValue() + bootstrapjs);
+        var head = $('head', iframeDoc);
+        var bootstrapcss = "<link rel='stylesheet' href='/bootstrap/css/bootstrap.min.css' />";
+        head.html('<title>' + name + '</title><style>' + cssCodeMirror.getValue() + '</style>' + bootstrapcss);
+        fillCV(cv);
     });
 </script>
