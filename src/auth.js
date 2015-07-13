@@ -16,8 +16,8 @@ module.exports = {
             return next();
 
         // if they aren't redirect them to the home page
-        req.flash('info', 'debe estar autenticado para poder hacer eso');
-        res.redirect('/');
+        req.flash('info', 'Debe estar autenticado para poder hacer eso');
+        res.redirect('/home');
     },
 
     isLoggedInAsAdmin: function(req, res, next) {
@@ -26,7 +26,7 @@ module.exports = {
             return next();
 
         // if they aren't redirect them to the home page
-        req.flash('info', 'debe estar autenticado como Administrador para poder hacer eso ' + req.user);
+        req.flash('info', 'Debe estar autenticado como Administrador para poder hacer eso');
         res.redirect('/');
     }
 };

@@ -179,3 +179,12 @@ a.btn-header {
     width: 100px;
 }
 
+#inputTemplateName {
+    text-align: center;
+    margin-top: 10px;
+}
+
+h1 .display-template-name {
+    text-align: center;
+    margin-top: 10px;
+}

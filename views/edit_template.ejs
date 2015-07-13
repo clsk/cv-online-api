@@ -4,21 +4,36 @@
 <link rel="stylesheet" type="text/css" href="/plugins/codemirror/theme/solarized.css"/>
 <%- include('partials/side-bar', {user: user, activeMenuItem: 'edit-template'}); %>
 
-<div class="row">
-    <div class="col-md-1"></div>
-    <div class="col-md-10">
-        <iframe id="preview-iframe" style="">
-        </iframe>
+<form id="edit-template-form" method="post" action="/admin/saveTemplate">
+    <div class="row">
+        <div class="form-group">
+          <div class="col-md-5"></div>
+          <div class="col-sm-2">
+              <% if (!template_id) { %>
+                  <input type="text" class="form-control" id="inputTemplateName" name="inputTemplateName" placeholder="Nombre del Tema..." autocomplete="off">
+              <% } else { %>
+                  <input type="hidden" id="inputTemplateId" name="inputTemplateId" value="<%= template_id %>"/>
+                  <h1 class="display-template-name"><%= template.name %></h1>
+              <% } %>
+          </div>
+          <div class="col-md-5"></div>
+        </div>
     </div>
-    <div class="col-md-1"></div>
-</div>
-<form id="edit-template-form">
+
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <iframe id="preview-iframe" style="">
+            </iframe>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
     <div class="row">
         <div class="col-md-6">
             <button type="button" class="btn btn-primary btn-sm" id="edit-template-reload-btn">Preview</button>
         </div>
         <div class="col-md-6">
-            <button type="button" class="btn btn-primary btn-sm" id="edit-template-save-btn">Save</button>
+            <button type="submit" class="btn btn-primary btn-sm" id="edit-template-save-btn">Save</button>
         </div>
 
     </div>
@@ -26,7 +41,7 @@
     <div class="row code-row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
-            <textarea name="html-text" id="html-text"></textarea>
+            <textarea name="htmlText" id="html-text"><%= (template_id) ? template.html : "" %></textarea>
         </div>
         <div class="col-md-1"></div>
     </div>
@@ -35,7 +50,7 @@
     <div class="row code-row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
-            <textarea name="css-text" id="css-text"></textarea>
+            <textarea name="cssText" id="css-text"><%= (template_id) ? template.css : "" %></textarea>
         </div>
         <div class="col-md-1"></div>
     </div>
@@ -54,6 +69,7 @@
     var cv = <%- JSON.stringify(cv) %>;
     $(document).ready(function() {
         iframeDoc = document.getElementById('preview-iframe').contentWindow.document;
+        $('#edit-template-reload-btn').click();
     });
 
     function fillCV(cv) {
