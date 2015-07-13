@@ -118,7 +118,19 @@ router.post('/deleteAccount', auth.isLoggedIn,  function(req, res) {
 });
 
 router.get('/Edit', function(req, res, next) {
-  res.render('edit_profile', { title: 'Editar Perfil', user: req.user, messages: req.flash('info') });
+  var query = "SELECT * FROM Users where id = ?";
+    GLOBAL.connection.query(query, [req.user.id], function(err, rows) {
+        if (err) {
+            req.flash('info', 'Error ejecutando query de MySQL');
+            res.redirect('/');
+        } else if (!rows) {
+            req.fash('info', 'Usuario o clave invalido!');
+            res.redirect('/');
+        } else {
+            console.log(rows);
+            res.render('edit_profile', { title: 'Editar Perfil', user: req.user, userEntity: rows , messages: req.flash('info') });
+        }
+    });
 });
 
 router.post('/Update', auth.isLoggedIn, function(req, res){
