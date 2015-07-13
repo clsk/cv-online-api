@@ -13,7 +13,6 @@ var auth = require('../src/auth');
   //res.send('respond with a resource');
 //});
 
-
 router.post('/signup', passport.authenticate('local-signup', {
     successRedirect : '/home', // redirect to the secure profile section
     failureRedirect : '/', // redirect back to the signup page if there is an error
@@ -99,8 +98,6 @@ router.post('/forgotPassword', function(req, res) {
     });
 });
 
-
-
 router.post('/deleteAccount', auth.isLoggedIn,  function(req, res) {
     // find a user whose email is the same as the forms email
     // we are checking to see if the user trying to login already exists
@@ -120,5 +117,23 @@ router.post('/deleteAccount', auth.isLoggedIn,  function(req, res) {
     });
 });
 
+router.get('/Edit', function(req, res, next) {
+  res.render('edit_profile', { title: 'Editar Perfil', user: req.user, messages: req.flash('info') });
+});
+
+router.post('/Update', auth.isLoggedIn, function(req, res){
+  var name = (typeof req.body.name === 'undefined') ? "" : req.body.name;
+  var lastname = (typeof req.body.lastname === 'undefined') ? "" :req.body.lastname;
+  var email = (typeof req.body.email === 'undefined') ? "" :req.body.email;
+  var telephone = (typeof req.body.telefonos === 'undefined') ? "" :req.body.telefonos;
+  var paginas = (typeof req.body.paginas === 'undefined') ? "" :req.body.paginas;
+
+  var q = "UPDATE Users set name  = ?, lastname = ?, email = ?, telephone = ?, webpage = ? where id = ?";
+  GLOBAL.connection.query(q, [name, lastname, email, telephone, paginas, req.user.id], function(err, rows) {
+      req.method = 'get'; 
+      res.redirect('/home'); 
+  });
+
+});
 
 module.exports = router;

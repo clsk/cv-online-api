@@ -1,0 +1,42 @@
+<%- include('headers/header', {user: user}); %>
+<%- include('partials/side-bar', {user: user, activeMenuItem: 'edit-profile'}); %>
+<section class="content">
+	<div class="row" style="margin:0 auto; width: 450px;">
+		<div class="col-md-12" >
+				<div class="box box-info">
+					<div class="box-header">
+						<h3 class="box-title">Datos del perfil</h3>
+					</div>
+					<div class="box-body">
+						<div class="form-group">
+	                      <label for="name">Nombre:</label>
+	                      <input type="text" class="form-control" id="name" placeholder="Nombre" value= <%= user.name%> >
+	                    </div>
+	                    <div class="form-group">
+	                      <label for="Lastname">Apellido:</label>
+	                      <input type="text" class="form-control" id="Lastname" placeholder="Apellido" value= <%= user.lastname%>>
+	                    </div>
+	                    <div class="form-group">
+	                    	<label for="Lastname">Email:</label>
+	                      	<div class=	"input-group">
+								<span class="input-group-addon">@</span>
+								<input type="text" class="form-control"  id="email" placeholder="Correo Electrónico" value= <%= user.email%>>
+							</div>
+	                    </div>
+						<div class="form-group">
+	                    	<label>Télefonos</label>
+	                      	<input type="text" class="form-control" id="telefonos" placeholder="Télefonos" value= <%= user.telephone%>>	
+	                  	</div>
+						<div class="form-group">
+	                    	<label>Páginas Web:</label>
+	                      	<input type="text" class="form-control" id="paginasWeb" placeholder="Páginas Web" value= <%= user.webpage%>>	
+	                  	</div>
+					</div><!-- /.box-body -->
+					<div class="box-footer">
+	                    <button id="btn_update_profile" class="btn btn-primary pull-right">Guardar datos del perfil</button>
+	                </div>
+				</div>
+		</div>
+	</div>
+</section>
+<%- include('footer'); %>

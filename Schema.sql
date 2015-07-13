@@ -13,6 +13,8 @@ create table if not exists Users(
    name varchar(100),
    lastname varchar(100),
    active  tinyint(1) default 1,
+   telephone varchar(100),
+   webpage varchar(200),
    is_admin tinyint(1) default 0
 )engine=innodb;
 
