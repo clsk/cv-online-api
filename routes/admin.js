@@ -41,9 +41,20 @@ router.get('/edit_template/:template_id?', auth.isLoggedInAsAdmin, function(req,
 router.post('/saveTemplate', auth.isLoggedInAsAdmin, function(req, res, next) {
     if (typeof req.body.inputTemplateId == 'undefined') {
         GLOBAL.sqlConnection.query("INSERT INTO Templates (created_by, name, html, css) VALUES (" + req.user.id + ", ?, ?, ?)", [req.body.inputTemplateName, req.body.htmlText, req.body.cssText], function(err, result) {
-            var id = result.resultId;
+            var id = result.insertId;
+            console.log(JSON.stringify(result));
             res.redirect('/admin/edit_template/'+id);
         });
+    } else {
+        GLOBAL.sqlConnection.query("UPDATE Templates SET html=?,css=? WHERE id=? ", [req.body.htmlText, req.body.cssText, req.body.inputTemplateId], function(err, result) {
+            if (err) {
+                req.flash('info', err);
+            } else if (result.affectedRows < 1) {
+                req.flash('info', 'No se pudieron guardar los cambios');
+            }
+            res.redirect('/admin/edit_template/'+req.body.inputTemplateId);
+        });
+
     }
 });
 
