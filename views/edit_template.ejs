@@ -62,6 +62,7 @@
 <script src="/plugins/codemirror/mode/javascript/javascript.js" type="text/javascript"></script>
 <script src="/plugins/codemirror/mode/xml/xml.js" type="text/javascript"></script>
 <script src="/plugins/codemirror/mode/htmlmixed/htmlmixed.js" type="text/javascript"></script>
+<script src="/plugins/ejs/ejs.min.js" type="text/javascript"></script>
 <script type="text/javascript">
     htmlCodeMirror = CodeMirror.fromTextArea(document.getElementById("html-text"), {lineNumbers: true, mode: "htmlmixed", theme: "ambiance" });
     cssCodeMirror = CodeMirror.fromTextArea(document.getElementById("css-text"), {lineNumbers: true, mode: "css", theme: "ambiance"});
@@ -72,23 +73,15 @@
         $('#edit-template-reload-btn').click();
     });
 
-    function fillCV(cv) {
-        var e;
-        for (i in cv.fields) {
-            e = iframeDoc.getElementById(cv.fields[i].name);
-            if (e) {
-                e.innerHTML = cv.fields[i].value;
-            }
-        }
-    }
-
     $('#edit-template-reload-btn').click(function() {
-        var name = '<%= cv.fields[0].value %> <%= cv.fields[1].value %>';
+        var name = '<%= template.name %>';
         var body = $('body', iframeDoc);
 
 
         var bootstrapjs = '<script src="/bootstrap/js/bootstrap.min.js" type="text/javascript"></sc' + 'ript>';
-        body.html(htmlCodeMirror.getValue() + bootstrapjs);
+        var html = new EJS({text: htmlCodeMirror.getValue()}).render(cv);
+        console.log(html);
+        body.html(html + bootstrapjs);
         var head = $('head', iframeDoc);
         var bootstrapcss = "<link rel='stylesheet' href='/bootstrap/css/bootstrap.min.css' />";
         head.html('<title>' + name + '</title><style>' + cssCodeMirror.getValue() + '</style>' + bootstrapcss);

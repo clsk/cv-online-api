@@ -29,7 +29,10 @@ router.get('/edit_template/:template_id?', auth.isLoggedInAsAdmin, function(req,
             GLOBAL.sqlConnection.query("SELECT start_date,end_date,school,degree FROM CV_Education where cv_id=1", function (err, rows) {
                 cv.education = rows;
                 GLOBAL.sqlConnection.query("SELECT id,name,value FROM CV_Fields where cv_id=1", function (err, rows) {
-                    cv.fields = rows;
+                    cv.fields = {};
+                    for (i in rows) {
+                        cv.fields[rows[i].name] = rows[i].value;
+                    }
                     if (typeof req.params.template_id != 'undefined') {
                         GLOBAL.sqlConnection.query("SELECT name,html,css from Templates WHERE id = ?", [req.params.template_id], function(err, rows) {
                             if (err) {
