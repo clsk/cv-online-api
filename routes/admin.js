@@ -3,6 +3,19 @@ var router = express.Router();
 var auth = require('../src/auth');
 
 /* GET home page. */
+router.get('/list_templates', auth.isLoggedIn, function(req, res, next) {
+    GLOBAL.sqlConnection.query("SELECT id,name,html,css FROM Templates", function(err, rows) {
+        if (err) {
+            req.flash('info', err);
+            res.redirect('/home');
+        } else {
+
+            res.render('list_templates', {title: 'List Templates', user: req.user, templates: rows, messages: req.flash('info') });
+        }
+    });
+});
+
+
 router.get('/edit_template/:template_id?', auth.isLoggedInAsAdmin, function(req, res, next) {
     var cv = {};
     GLOBAL.sqlConnection.query("SELECT id FROM CVs WHERE name=\'Test CV\'", function (err, rows) {
@@ -27,10 +40,10 @@ router.get('/edit_template/:template_id?', auth.isLoggedInAsAdmin, function(req,
                                 res.redirect('/home');
                             }
 
-                            res.render('edit_template', { title: 'Express', user: req.user, cv: cv, template_id: req.params.template_id, template: rows[0], messages: req.flash('info')});
+                            res.render('edit_template', { title: 'Edit Template', user: req.user, cv: cv, template_id: req.params.template_id, template: rows[0], messages: req.flash('info')});
                         });
                     } else {
-                        res.render('edit_template', { title: 'Express', user: req.user, cv: cv, template_id: req.params.template_id, messages: req.flash('info')});
+                        res.render('edit_template', { title: 'Edit Template', user: req.user, cv: cv, template_id: req.params.template_id, messages: req.flash('info')});
                     }
                 });
             });

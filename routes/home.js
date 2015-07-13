@@ -8,4 +8,5 @@ router.get('/', auth.isLoggedIn, function(req, res, next) {
   res.render('home', { title: 'Express', user: req.user, messages: req.flash('info')});
 });
 
+
 module.exports = router;

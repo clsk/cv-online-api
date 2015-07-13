@@ -188,3 +188,7 @@ h1 .display-template-name {
     text-align: center;
     margin-top: 10px;
 }
+
+#template-select {
+    margin: 20px 0;
+}
