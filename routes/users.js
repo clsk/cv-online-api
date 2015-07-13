@@ -117,9 +117,9 @@ router.post('/deleteAccount', auth.isLoggedIn,  function(req, res) {
     });
 });
 
-router.get('/Edit', function(req, res, next) {
+router.get('/Edit', auth.isLoggedIn, function(req, res, next) {
   var query = "SELECT * FROM Users where id = ?";
-    GLOBAL.connection.query(query, [req.user.id], function(err, rows) {
+    GLOBAL.sqlConnection.query(query, [req.user.id], function(err, rows) {
         if (err) {
             req.flash('info', 'Error ejecutando query de MySQL');
             res.redirect('/');
@@ -141,7 +141,7 @@ router.post('/Update', auth.isLoggedIn, function(req, res){
   var paginas = (typeof req.body.paginas === 'undefined') ? "" :req.body.paginas;
 
   var q = "UPDATE Users set name  = ?, lastname = ?, email = ?, telephone = ?, webpage = ? where id = ?";
-  GLOBAL.connection.query(q, [name, lastname, email, telephone, paginas, req.user.id], function(err, rows) {
+  GLOBAL.sqlConnection.query(q, [name, lastname, email, telephone, paginas, req.user.id], function(err, rows) {
       req.method = 'get'; 
       res.redirect('/home'); 
   });
