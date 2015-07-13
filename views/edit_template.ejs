@@ -48,10 +48,11 @@
     cssCodeMirror = CodeMirror.fromTextArea(document.getElementById("css-text"), {lineNumbers: true, mode: "css", theme: "ambiance"});
 
     $('#edit-template-reload-btn').click(function() {
+        var name = '<%= cv.fields[0].value %> <%= cv.fields[1].value %>';
         var doc = document.getElementById('preview-iframe').contentWindow.document;
         var body = $('body', doc);
         body.html(htmlCodeMirror.getValue());
         var head = $('head', doc);
-        head.html('<title>Test Template</title><style>' + cssCodeMirror.getValue() + '</style>');
+        head.html('<title>' + name + '</title><style>' + cssCodeMirror.getValue() + '</style>');
     });
 </script>

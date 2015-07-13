@@ -5,7 +5,7 @@ var LocalStrategy   = require('passport-local').Strategy;
 var mysql = require('mysql');
 var bcrypt = require('bcrypt-nodejs');
 var dbconfig = require('../config/database');
-GLOBAL.connection = mysql.createConnection(dbconfig.connection);
+GLOBAL.sqlConnection = mysql.createConnection(dbconfig.connection);
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
@@ -23,7 +23,7 @@ module.exports = function(passport) {
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        GLOBAL.connection.query("SELECT id,email,name,lastname,is_admin FROM Users WHERE id = ? ",[id], function(err, rows){
+        GLOBAL.sqlConnection.query("SELECT id,email,name,lastname,is_admin FROM Users WHERE id = ? ",[id], function(err, rows){
             done(err, rows[0]);
         });
     });
@@ -45,7 +45,7 @@ module.exports = function(passport) {
         function(req, email, password, done) {
             // find a user whose email is the same as the forms email
             // we are checking to see if the user trying to login already exists
-            GLOBAL.connection.query("SELECT * FROM Users WHERE email = ?",[email], function(err, rows) {
+            GLOBAL.sqlConnection.query("SELECT * FROM Users WHERE email = ?",[email], function(err, rows) {
                 if (err)
                     return done(err);
                 if (rows.length) {
@@ -62,7 +62,7 @@ module.exports = function(passport) {
                     var insertQuery = "INSERT INTO Users (email, password, name, lastname) values (?,?,?,?)";
 
 
-                    GLOBAL.connection.query(insertQuery,[user.email,user.password,user.name,user.lastname], function(err,rows){
+                    GLOBAL.sqlConnection.query(insertQuery,[user.email,user.password,user.name,user.lastname], function(err,rows){
                         user.id = rows.insertId;
                         delete user.password;
                         return done(null, user);
@@ -85,7 +85,7 @@ module.exports = function(passport) {
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
     function(req, email, password, done) { // callback with email and password from our form
-        GLOBAL.connection.query("SELECT * FROM Users WHERE email = ?",[email], function(err, rows) {
+        GLOBAL.sqlConnection.query("SELECT * FROM Users WHERE email = ?",[email], function(err, rows) {
             if (err)
                 return done(err);
 
