@@ -78,7 +78,7 @@
     $('#edit-template-reload-btn').click(function() {
         var head = $('head', iframeDoc);
         var bootstrapcss = "<link rel='stylesheet' href='/bootstrap/css/bootstrap.min.css' />";
-        head.html('<style>' + cssCodeMirror.getValue() + '</style>' + bootstrapcss);
+        head.html(bootstrapcss + '<style>' + cssCodeMirror.getValue() + '</style>');
 
 
         var body = $('body', iframeDoc);
