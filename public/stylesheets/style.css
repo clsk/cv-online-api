@@ -1,6 +1,13 @@
 /*Home page*/
-#available-template-title{
-  margin: 40px;
+.available-template-title{
+  min-height: 50px;
+  background-color: gray;
+  color: white;
+  margin: 0 auto;
+  margin-bottom: 40px;
+  font-family: initial;
+  padding-top: 10px;
+  padding-bottom: 25px;
 }
 
 .templates-available{
@@ -10,16 +17,19 @@
   display: inline;
 }
 
-.footer-details{
-  /*margin-top: 10px;*/
+.carousel-img img{
+  width: 100%;
+  margin: 0 auto;
+  max-height: 500px;
+}
+#copyright-text{
+  margin-left: 70px;
 }
 .terms-and-politics{
   text-align: right;
+  width: 36.666667%;
 }
 
-#copyright-text {
-    /*margin-left: 30%;*/
-}
 .footer{
   background-color: #367fa9;
   padding-top:5px;
