@@ -4,9 +4,7 @@ module.exports = {
 
     getCVByName: function(name, callback) {
         var cv = {};
-        console.log(1);
         GLOBAL.sqlConnection.query("SELECT id FROM CVs WHERE name=?", [name], function (err, rows) {
-            console.log(2);
             if (err) {
                 callback(err, null);
             } else if (rows.length < 1) {
@@ -32,7 +30,6 @@ module.exports = {
 
                                 var q = async.queue(function (data, callback) {
                                     GLOBAL.sqlConnection.query("SELECT value FROM CV_WorkExperiences_BulletPoint where cv_workexperience_id="+data.work_experience_id, function (err, rows) {
-                                        console.log('working on ' + data.i);
                                         cv.work_experiences[data.i].bullet_points = rows;
                                         callback();
                                     });
