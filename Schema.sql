@@ -53,6 +53,7 @@ create table if not exists CV_WorkExperiences(
     cv_id integer,
     start_date timestamp,
     end_date timestamp,
+    company varchar(200),
     address varchar(500),
     CONSTRAINT cv_workexperience_cv_id_fk FOREIGN KEY (cv_id) REFERENCES CVs (id)
 ) engine=innodb;
