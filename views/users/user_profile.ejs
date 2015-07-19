@@ -1,0 +1,28 @@
+<%- include('../headers/header', {user: user}); %>
+<%- include('../partials/side-bar', {user: user, activeMenuItem: 'view-profil'}); %>
+<div >
+  <h1 class="text-center">Informacion basica:</h1>
+  <table class="user-profile">
+    <tr>
+      <th>Nombre: </th>
+      <td>Juan Esteban</td>
+    </tr>
+    <tr>
+      <th>Apellido: </th>
+      <td>Perez Santana</td>
+    </tr>
+    <tr>
+      <th>Email:</th>
+      <td>perezesteban@example.com</td>
+    </tr>
+    <tr>
+      <th>Telefonos:</th>
+      <td>809-596-3401 <br> 809-596-3401 <br> 809-596-3401 <br></td>
+    </tr>
+    <tr>
+      <th>Paginas Web: </th>
+      <td>google.com <br> twitter.com <br> linkein.com <br></td>
+    </tr>
+  </table>
+</div>
+<%- include('../footer'); %>
