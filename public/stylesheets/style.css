@@ -10,11 +10,11 @@
   padding-bottom: 25px;
 }
 
-.templates-available{
+.templates-available .row > div{
   margin-bottom: 50px;
 }
-.templates-available .thumbnail {
-  display: inline;
+.templates-available img {
+  height: 150px;
 }
 
 .carousel-img img{
@@ -201,4 +201,32 @@ h1 .display-template-name {
 
 #template-select {
     margin: 20px 0;
+}
+
+/*User profile*/
+.user-profile td,  .user-profile th{
+padding-bottom: 10px;
+}
+.user-profile th{
+  width: 150px;
+
+}
+.user-profile {
+  margin: 0 auto;
+  width: 310px;
+}
+
+.user-templates-available .row > div{
+  margin-bottom: 80px;
+}
+.user-templates-available img {
+  height: 150px;
+}
+.user-templates-available {
+  margin-left: 85px;
+  width: 88%;
+  margin-top: 80px;
+}
+.see-preview{
+ width: 82%!important;
 }
