@@ -2,7 +2,7 @@
 <%- include('partials/side-bar', {user: user, activeMenuItem: 'edit-profile'}); %>
 <section class="content">
 	<div class="row" style="margin:0 auto; width: 450px;">
-		<div class="col-md-12" >
+		<div class="col-md-12" id="editProfileValidator">
 				<div class="box box-info">
 					<div class="box-header">
 						<h3 class="box-title">Datos del perfil</h3>
@@ -17,10 +17,11 @@
 	                      <input type="text" class="form-control" id="Lastname" placeholder="Apellido" value="<%= userEntity[0].lastname%> ">
 	                    </div>
 	                    <div class="form-group">
+	                    	<div class="help-block with-errors"></div>
 	                    	<label for="Lastname">Email:</label>
 	                      	<div class=	"input-group">
 								<span class="input-group-addon">@</span>
-								<input type="text" class="form-control"  id="email" placeholder="Correo Electrónico" value="<%= userEntity[0].email%>">
+								<input type="email" class="form-control"  id="email" placeholder="Correo Electrónico" value="<%= userEntity[0].email%>" data-error="Bruh, that email address is invalid" required>
 							</div>
 	                    </div>
 						<div class="form-group">

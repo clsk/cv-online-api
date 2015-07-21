@@ -11,10 +11,19 @@
       </div>
 </div> <!-- Close wrapper div from header -->
 <script src="/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/bootstrap/js/validator.js" type="text/javascript"></script>
 <script src="/dist/js/app.min.js" type="text/javascript"></script>
 <script src="/js/main.js" type="text/javascript"></script>
 <script src="/js/login.js" type="text/javascript"></script>
 <script src="/js/profile.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        $("[rel='tooltip']").tooltip();
+    });
+    $(document).ready( function () {
+      $('#editProfileValidator').validator();
+    });
+</script>
 <%- include('modals/register-login') %>
 <%- include('modals/recuperar-contrasena') %>
 </body>
