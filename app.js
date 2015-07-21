@@ -30,6 +30,15 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
+app.use(function (req, res, next) { // attach req to all views
+    res.locals.req = req;
+    res.locals.baseURL = '//' + req.hostname;
+    if (app.settings.port != 80 && app.settings.port != 443) {
+        res.locals.baseURL += ':' + app.settings.port;
+    }
+    res.locals.baseURL += '/';
+    next();
+});
 
 require('./src/init-passport')(passport);
 
@@ -43,10 +52,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var home = require('./routes/home');
+var admin = require('./routes/admin');
 
 app.use('/', routes);
 app.use('/home', home);
 app.use('/users', users);
+app.use('/admin', admin);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
