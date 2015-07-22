@@ -53,11 +53,13 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var home = require('./routes/home');
 var admin = require('./routes/admin');
+var cvs= require('./routes/cvs');
 
 app.use('/', routes);
 app.use('/home', home);
 app.use('/users', users);
 app.use('/admin', admin);
+app.use('/cvs',cvs);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

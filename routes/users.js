@@ -148,4 +148,11 @@ router.post('/Update', auth.isLoggedIn, function(req, res){
 
 });
 
+router.get('/view-profile', function(req, res, next) {
+  res.render('users/user_profile', { title: 'Cv Online', messages: req.flash('info'), user: req.user });
+});
+
+router.get('/change-cv', function(req, res, next) {
+  res.render('users/cv_list', { title: 'Cv online', messages: req.flash('info'), user: req.user });
+});
 module.exports = router;
