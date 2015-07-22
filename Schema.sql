@@ -75,6 +75,11 @@ create table if not exists CV_Fields(
 )engine=innodb;
 
 CREATE INDEX cv_fields_id_idx ON CV_Fields (cv_id);
+ALTER TABLE `Resumes`.`CV_WorkExperiences` CHANGE COLUMN `address` `title` VARCHAR(500) NULL DEFAULT NULL ;
+ALTER TABLE `Resumes`.`CV_WorkExperiences` CHANGE COLUMN `address` `title` VARCHAR(500) NULL DEFAULT NULL ;
+ALTER TABLE `Resumes`.`CV_WorkExperiences` ADD COLUMN `other_info` TEXT NULL AFTER `title`;
+ALTER TABLE `Resumes`.`CV_Education` ADD COLUMN `other_info` TEXT NULL AFTER `degree`;
+
 
 /*
 INSERT INTO CVs (user_id, name) VALUES (1, "Test CV");
