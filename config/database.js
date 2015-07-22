@@ -4,7 +4,7 @@ module.exports = {
         'connectionLimit': 10,
         'host': 'localhost',
         'user': 'root',
-        'password': 'wendyes',
+        'password': '',
         'database': 'Resumes'
     },
     'database': 'Resumes',
