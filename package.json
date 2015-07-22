@@ -25,6 +25,7 @@
     "passport-local": "*",
     "password-generator": "~1.0.0",
     "phantomjs": "^1.9.17",
-    "serve-favicon": "~2.2.1"
+    "serve-favicon": "~2.2.1",
+    "fs": "latest"
   }
 }

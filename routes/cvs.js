@@ -70,22 +70,16 @@ router.get('/setTemplate/:id',auth.isLoggedIn,function(req, res) {
 
 router.get('/download', auth.isLoggedIn,function(req, res){
   var user = req.user;
-  var cv = new CV(null, user);
-  cv.get(function(err, response) {
-    if(!response) {
+  var cvObj = new CV(null, user);
+  cvObj.get(function(err, cv) {
+    if(!cv) {
       req.flash('info', 'Error, no tiene ningun cv asociado a su cuenta.');
       res.redirect('/cvs/edit');
     } else {
-      Template.get(response.template_id, function(err,template){
+        Template.get(cv.template_id, function(err,template){
         var options = { format: 'Letter' };
-        var htmlString = Template.getHtml(template);
-        var template = EJS.compile(htmlString);
-        var html = template(response[0]);
-
-        pdf.create(html, options).toStream(function(err, stream) {
-          if (err) return console.log(err);
-          stream.pipe(res); // { filename: '/app/businesscard.pdf' }
-        });
+        var html = Template.getHtml(template, cv);
+        res.render('cv_download', {code: html});
       });
     }
   });
