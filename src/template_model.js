@@ -8,5 +8,10 @@ module.exports = {
     GLOBAL.sqlConnection.query('SELECT * FROM Templates', function(err, templates) {
       cb(err || !templates.length, templates);
     });
+  },
+  getHtml: function(template) {
+    var html = '<html><head><style>' + template.css + '</style></head>'; 
+    html += '<body>'+ template.html + '</body></html>';
+    return html;
   }
 };

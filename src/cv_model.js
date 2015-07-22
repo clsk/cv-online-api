@@ -122,7 +122,6 @@ module.exports = function(data, user) {
 
   this.get = function(cb) {
     GLOBAL.sqlConnection.query('SELECT * FROM CVs WHERE user_id = ? LIMIT 1', [self.userId], function(err, response) {
-      console.log('get ',err,response);
       if (err || !response.length) {
         cb(true);
         return false;
