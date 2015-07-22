@@ -22,7 +22,7 @@ module.exports = {
                         }
 
                         // Get Work Experiences
-                        GLOBAL.sqlConnection.query("SELECT id,start_date,end_date,address,company from CV_WorkExperiences WHERE cv_id="+cv.id, function(err, rows) {
+                        GLOBAL.sqlConnection.query("SELECT id,start_date,end_date,title,company from CV_WorkExperiences WHERE cv_id="+cv.id, function(err, rows) {
                             cv.work_experiences = rows;
 
                             var rowsCount = rows.length
