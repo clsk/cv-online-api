@@ -5,7 +5,7 @@ var db = require('../src/db');
 
 /* GET home page. */
 router.get('/list_templates', auth.isLoggedIn, function(req, res, next) {
-    GLOBAL.sqlConnection.query("SELECT id,name,html,css FROM Templates", function(err, rows) {
+    GLOBAL.sqlConnection.query("SELECT id,name FROM Templates", function(err, rows) {
         if (err) {
             req.flash('info', err);
             res.redirect('/home');

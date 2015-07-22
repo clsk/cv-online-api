@@ -36,18 +36,19 @@ router.get('/show/:id?',auth.isLoggedIn,function(req, res) {
     if(!response) {
       req.flash('info', 'Error, no tiene ningun cv asociado a su cuenta.');
       res.redirect('/cvs/edit');
+    } else {
+      console.log('response',response);
+      var templateId = typeof req.params.id != 'undefined' ? req.params.id : response.template_id;
+      Template.get(templateId,function(err,template){
+        res.render('cv_show', {
+          title: 'Ver CV',
+          user: user,
+          messages: req.flash('info') ,
+          cv: response,
+          template: template
+        });
+      });
     }
-    console.log('response',response);
-    var templateId = typeof req.params.id != 'undefined' ? req.params.id : response.template_id;
-    Template.get(templateId,function(err,template){
-      res.render('cv_show', {
-        title: 'Ver CV', 
-        user: user, 
-        messages: req.flash('info') ,
-        cv: response,
-        template: template
-      });  
-    });
   });
 });
 
