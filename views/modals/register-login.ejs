@@ -84,7 +84,7 @@ $(document).ready(function() {
 
   $('#register-submit').on('click', function (e) {
       console.log('submitting');
-    var email = $('#email').val();
+    var email = $('#mail').val();
     var password = String($('#password-').val());
     var confirmPassword = String($('#confirm-password').val());
     if (password != confirmPassword) {
