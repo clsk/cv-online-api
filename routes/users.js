@@ -64,7 +64,7 @@ router.post('/changePassword', auth.isLoggedIn, function(req, res) {
 });
 
 router.post('/forgotPassword', function(req, res) {
-    var email = req.body.mail;
+    var email = req.body.emailc;
     var query = "SELECT * FROM Users where email = ?";
     GLOBAL.sqlConnection.query(query, [email], function(err, rows) {
         if (err) {
