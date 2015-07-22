@@ -1,6 +1,5 @@
 var db = require('./db');
 module.exports = function(data, user) {
-  console.log(data);
   var self = this;
   this.userId = user.id;
   this.cvId = null;
@@ -121,13 +120,7 @@ module.exports = function(data, user) {
   };
 
   this.get = function(cb) {
-    GLOBAL.sqlConnection.query('SELECT * FROM CVs WHERE user_id = ? LIMIT 1', [self.userId], function(err, response) {
-      if (err || !response.length) {
-        cb(true);
-        return false;
-      }
-      db.getCVByName(response[0].name, cb);
-    })
+    db.getCVByUserId(self.userId, cb);
   }
 
   this.setTemplate = function(id,cb){
