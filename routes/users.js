@@ -42,7 +42,7 @@ router.get('/logout', function(req, res) {
 
 router.post('/changePassword', auth.isLoggedIn, function(req, res) {
     var query = "SELECT * FROM Users where email = ?";
-    GLOBAL.connection.query(query, [req.user.email], function(err, rows) {
+    GLOBAL.sqlConnection.query(query, [req.user.email], function(err, rows) {
         if (err) {
             req.flash('info', 'Error ejecutando query de MySQL');
             res.redirect('/home');
@@ -55,7 +55,7 @@ router.post('/changePassword', auth.isLoggedIn, function(req, res) {
                 res.redirect('/home');
             } else {
                var q = "UPDATE Users set password = ? where id = ?";
-               GLOBAL.connection.query(q, [bcrypt.hashSync(req.body.newpassword, null, null), req.user.id], function(err, rows) {
+               GLOBAL.sqlConnection.query(q, [bcrypt.hashSync(req.body.newpassword, null, null), req.user.id], function(err, rows) {
                    res.redirect('/home');
                });
             }
@@ -64,9 +64,9 @@ router.post('/changePassword', auth.isLoggedIn, function(req, res) {
 });
 
 router.post('/forgotPassword', function(req, res) {
-    var email = req.body.email;
+    var email = req.body.mail;
     var query = "SELECT * FROM Users where email = ?";
-    GLOBAL.connection.query(query, [email], function(err, rows) {
+    GLOBAL.sqlConnection.query(query, [email], function(err, rows) {
         if (err) {
             req.flash('info', 'Error ejecutando query de MySQL');
             res.redirect('/');
@@ -76,7 +76,7 @@ router.post('/forgotPassword', function(req, res) {
         } else {
             var newPassword = passwordGenerator(12, false);
             var q = "UPDATE Users set password = ? where email = ?";
-            GLOBAL.connection.query(q, [bcrypt.hashSync(newPassword, null, null), email], function(err, rows) {
+            GLOBAL.sqlConnection.query(q, [bcrypt.hashSync(newPassword, null, null), email], function(err, rows) {
                var transporter = nodemailer.createTransport(mailConfig);
                var mailOptions = {
                    from: mailConfig.fromAddress, // sender address
