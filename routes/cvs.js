@@ -4,6 +4,8 @@ var passport = require('passport');
 var auth = require('../src/auth');
 var CV = require('../src/cv_model');
 var Template = require('../src/template_model');
+var pdf = require('html-pdf');
+var EJS = require('ejs');
 
 router.get('/edit', auth.isLoggedIn,function(req, res) {
   var user = req.user;
@@ -63,6 +65,29 @@ router.get('/setTemplate/:id',auth.isLoggedIn,function(req, res) {
       req.flash('info','Hubo un error mientras se cambiaba de cv.');
     }
     res.redirect('/cvs/show');
+  });
+});
+
+router.get('/download', auth.isLoggedIn,function(req, res){
+  var user = req.user;
+  var cv = new CV(null, user);
+  cv.get(function(err, response) {
+    if(!response) {
+      req.flash('info', 'Error, no tiene ningun cv asociado a su cuenta.');
+      res.redirect('/cvs/edit');
+    } else {
+      Template.get(response.template_id, function(err,template){
+        var options = { format: 'Letter' };
+        var htmlString = Template.getHtml(template);
+        var template = EJS.compile(htmlString);
+        var html = template(response[0]);
+
+        pdf.create(html, options).toStream(function(err, stream) {
+          if (err) return console.log(err);
+          stream.pipe(res); // { filename: '/app/businesscard.pdf' }
+        });
+      });
+    }
   });
 });
 module.exports = router;
