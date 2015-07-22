@@ -80,12 +80,12 @@ module.exports = function(passport) {
 
     passport.use('local-login', new LocalStrategy({
         // by default, local strategy uses username and password, we will override with email
-        usernameField : 'email',
+        usernameField : 'mail',
         passwordField : 'password',
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
-    function(req, email, password, done) { // callback with email and password from our form
-        GLOBAL.sqlConnection.query("SELECT * FROM Users WHERE email = ?",[email], function(err, rows) {
+    function(req, mail, password, done) { // callback with email and password from our form
+        GLOBAL.sqlConnection.query("SELECT * FROM Users WHERE email = ?",[mail], function(err, rows) {
             if (err)
                 return done(err);
 
