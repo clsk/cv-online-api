@@ -75,11 +75,6 @@ create table if not exists CV_Fields(
 )engine=innodb;
 
 CREATE INDEX cv_fields_id_idx ON CV_Fields (cv_id);
-ALTER TABLE `Resumes`.`CV_WorkExperiences` CHANGE COLUMN `address` `title` VARCHAR(500) NULL DEFAULT NULL ;
-ALTER TABLE `Resumes`.`CV_WorkExperiences` CHANGE COLUMN `address` `title` VARCHAR(500) NULL DEFAULT NULL ;
-ALTER TABLE `Resumes`.`CV_WorkExperiences` ADD COLUMN `other_info` TEXT NULL AFTER `title`;
-ALTER TABLE `Resumes`.`CV_Education` ADD COLUMN `other_info` TEXT NULL AFTER `degree`;
-
 
 /*
 INSERT INTO CVs (user_id, name) VALUES (1, "Test CV");
@@ -97,3 +92,8 @@ INSERT INTO CV_WorkExperiences_BulletPoint (cv_workexperience_id, value) VALUES 
 INSERT INTO CV_Education(cv_id, start_date, end_date, school, degree) VALUES (1, '2008-8-30', '2013-12-14', 'PUCMM', 'B.S. Computer Engineering');
 INSERT INTO CV_Education(cv_id, start_date, end_date, school, degree) VALUES (1, '2014-1-30', '2015-12-14', 'PUCMM', 'M.S. Artificial Intelligence');
 */
+
+
+ALTER TABLE `Resumes`.`CV_WorkExperiences` CHANGE COLUMN `address` `title` VARCHAR(500) NULL DEFAULT NULL ;
+ALTER TABLE `Resumes`.`CV_WorkExperiences` ADD COLUMN `other_info` TEXT NULL AFTER `title`;
+ALTER TABLE `Resumes`.`CV_Education` ADD COLUMN `other_info` TEXT NULL AFTER `degree`;

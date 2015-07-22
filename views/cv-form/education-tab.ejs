@@ -7,24 +7,28 @@
   </div><!-- /.box-header -->
   <div class="box-body">
     <div class="form-group col-md-6">
-      <label for="course-degree" class="control-label">Nombre del curso</label>
-      <input type="text" class="form-control" id="course-degree" name="education[0][degree]">
+      <label class="control-label">Nombre del curso
+        <input type="text" class="form-control degree" name="education[0][degree]">
+      </label>
     </div>
     <div class="form-group col-md-6">
-      <label for="school-name" class="control-label">Nombre del instituto</label>
-      <input type="text" class="form-control" id="school-name" name="education[0][school]">
+      <label class="control-label">Nombre del instituto
+        <input type="text" class="form-control school" name="education[0][school]">
+      </label>
     </div>
     <div class="form-group col-md-6">
-      <label for="start-date" class="control-label">Fecha de inicio</label>
-      <input type="text" class="form-control" id="start-date" name="education[0][start_date]">
+      <label class="control-label">Fecha de inicio
+        <input type="text" class="form-control start_date" name="education[0][start_date]" datepicker>
+      </label>
     </div>
     <div class="form-group col-md-6">
-      <label for="end-date" class="control-label">Fecha final</label>
-      <input type="text" class="form-control" id="end-date" name="education[0][end_date]">
+      <label class="control-label">Fecha final
+        <input type="text" class="form-control end_date" name="education[0][end_date]" datepicker>
+      </label>
     </div>
     <div class="form-group col-md-12">
-      <label for="other-info" class="control-label">Otras informaciones</label>
-      <textarea id="other-info" class="form-control" name="education[0][other_info]"></textarea>
+      <label class="control-label">Otras informaciones</label>
+      <textarea class="form-control other_info" name="education[0][other_info]" rows="9" wysiwyg></textarea>      
     </div>
   </div>
 </div>

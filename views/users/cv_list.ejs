@@ -2,11 +2,13 @@
 <%- include('../partials/side-bar', {user: user, activeMenuItem: 'change-default-cv'}); %>
 <div class="user-templates-available container" >
   <div class="row">
+    <% for(i in templates){%>
     <div class="col-md-4 col-xs-6">
-      <img src="/images/executive.png" alt="" class="img-responsive">
+      <img src="/images/templates/<%=templates[i].name%>.png" alt="" class="img-responsive">
       <!-- ... recuerda hacer un foreach y poner el id -->
-      <a href="/cvs/show/..." class="btn btn-block btn-success see-preview">Vista previa</a>
+      <a href="/cvs/show/<%= templates[i].id%>" class="btn btn-block btn-success see-preview">Vista previa</a>
     </div>
+   <%}%><!-- 
     <div class="col-md-4 col-xs-6">
       <img src="/images/elegant.png" alt="" class="img-responsive">
       <a href="#" class="btn btn-block btn-success see-preview">Vista previa</a>
@@ -26,7 +28,7 @@
     <div class="col-md-4 col-xs-6">
       <img src="/images/bold.png" alt="" class="img-responsive">
       <a href="#" class="btn btn-block btn-success see-preview">Vista previa</a>
-    </div>
+    </div> -->
   </div>
 </div>
 <%- include('../footer'); %>

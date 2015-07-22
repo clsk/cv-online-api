@@ -1,9 +1,14 @@
 var db = require('./db');
 module.exports = function(data, user) {
+  console.log(data);
+  var self = this;
   this.userId = user.id;
   this.cvId = null;
 
-  var self = this;
+  if (data) {
+    this.cvId = typeof data.id != 'undefined' ? data.id : null;
+  }
+
 
   var _getFirstTemplate = function(cb) {
     GLOBAL.sqlConnection.query('SELECT * FROM Templates LIMIT 1', function(err, templates) {
@@ -12,46 +17,65 @@ module.exports = function(data, user) {
   };
 
   var _addCV = function(templateId, cb){
-    GLOBAL.sqlConnection.query('INSERT INTO CVs SET ?', {
+    var data = {
       user_id: self.userId,
       name: "",
       template_id: templateId,
       created_on: new Date().getTime(),
       last_updated: new Date().getTime()
-    }, cb);
+    };
+    if (!self.cvId) {
+      var sql = 'INSERT INTO CVs SET ?';
+      var params = data;
+    } else {
+      var sql = 'UPDATE CVs SET ? WHERE id = ' + self.cvId;
+      var params = data;
+    }
+    GLOBAL.sqlConnection.query(sql, params, function(err, response) {
+      if (!self.cvId) {
+        self.cvId = response.insertId;
+      }
+      cb(err, response);
+    });
   };
 
   var _addWorkExperiences = function(workData, cb) {
-    var rows = [];
-    var sql = 'INSERT INTO CV_WorkExperiences (cv_id, start_date, end_date, company, address) VALUES';
-    for(i in workData) {
-      var row = [self.cvId, workData[i].start_date, workData[i].end_date, workData[i].company, workData[i].title];
-      rows.push('("' + row.join('","') + '")');
-    }
-    sql += rows.join(',');
-    GLOBAL.sqlConnection.query(sql, data, cb);
+    GLOBAL.sqlConnection.query("DELETE FROM CV_WorkExperiences WHERE cv_id = ?", [self.cvId], function() {
+      var rows = [];
+      var sql = 'INSERT INTO CV_WorkExperiences (cv_id, start_date, end_date, company, title, other_info) VALUES';
+      for(i in workData) {
+        var row = [self.cvId, workData[i].start_date, workData[i].end_date, workData[i].company, workData[i].title, GLOBAL.sqlConnection.escape(workData[i].other_info)];
+        rows.push('("' + row.join('","') + '")');
+      }
+      sql += rows.join(',');
+      GLOBAL.sqlConnection.query(sql, data, cb);
+    });
   };
 
   var _addEducation = function(educationData, cb) {
-    var rows = [];
-    var sql = 'INSERT INTO CV_Education (cv_id, start_date, end_date, school, degree) VALUES';
-    for(i in educationData) {
-      var row = [self.cvId, educationData[i].start_date, educationData[i].end_date, educationData[i].school, educationData[i].degree];
-      rows.push('("' + row.join('","') + '")');
-    }
-    sql += rows.join(',');
-    GLOBAL.sqlConnection.query(sql, data, cb);
+    GLOBAL.sqlConnection.query("DELETE FROM CV_Education WHERE cv_id = ?", [self.cvId], function() {
+      var rows = [];
+      var sql = 'INSERT INTO CV_Education (cv_id, start_date, end_date, school, degree, other_info) VALUES';
+      for(i in educationData) {
+        var row = [self.cvId, educationData[i].start_date, educationData[i].end_date, educationData[i].school, educationData[i].degree, GLOBAL.sqlConnection.escape(educationData[i].other_info)];
+        rows.push('("' + row.join('","') + '")');
+      }
+      sql += rows.join(',');
+      GLOBAL.sqlConnection.query(sql, data, cb);
+    });
   };
 
   var _addFields = function(fields, cb) {
-    var rows = [];
-    var sql = 'INSERT INTO CV_Fields (cv_id, name, value) VALUES';
-    for(name in fields) {
-      var row = [self.cvId, name, fields[name]];
-      rows.push('("' + row.join('","') + '")');
-    }
-    sql += rows.join(',');
-    GLOBAL.sqlConnection.query(sql, data, cb);
+    GLOBAL.sqlConnection.query("DELETE FROM CV_Fields WHERE cv_id = ?", [self.cvId], function() {
+      var rows = [];
+      var sql = 'INSERT INTO CV_Fields (cv_id, name, value) VALUES';
+      for(name in fields) {
+        var row = [self.cvId, name, fields[name]];
+        rows.push('("' + row.join('","') + '")');
+      }
+      sql += rows.join(',');
+      GLOBAL.sqlConnection.query(sql, data, cb);
+    });
   }
 
   this.save = function(cb) {
@@ -67,7 +91,6 @@ module.exports = function(data, user) {
           cb(true);
           return false;
         }
-        self.cvId = templateResponse.insertId;
         // Save cv work
         _addWorkExperiences(data.work, function(err, workResponse){
           if (err) {
@@ -81,14 +104,15 @@ module.exports = function(data, user) {
               return false;
             }
             // Save other fields
+            for(i in user) {
+              data.fields[i] = user[i];
+            }
             _addFields(data.fields, function(err, fieldsResponse) {
               if (err) {
                 cb(true);
                 return false;
               }
-              _addFields(user, function(err, fieldsResponse2) {
-                cb(false, { id: self.cvId });
-              });
+              cb(false, { id: self.cvId });
             });
           });          
         });

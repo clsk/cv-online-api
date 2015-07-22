@@ -4,8 +4,8 @@ module.exports = {
       cb(err || !templates.length, templates[0]);
     });
   },
-  all: function (id,cb){
-    GLOBAL.sqlConnection.query('SELECT * FROM Templates',[id], function(err, templates) {
+  all: function (cb){
+    GLOBAL.sqlConnection.query('SELECT * FROM Templates', function(err, templates) {
       cb(err || !templates.length, templates);
     });
   }

@@ -5,6 +5,7 @@ var bcrypt = require('bcrypt-nodejs');
 var nodemailer = require('nodemailer');
 var passwordGenerator = require('password-generator');
 var mailConfig = require('../config/mail');
+var Template = require('../src/template_model');
 
 var auth = require('../src/auth');
 
@@ -153,6 +154,12 @@ router.get('/view-profile', function(req, res, next) {
 });
 
 router.get('/change-cv', function(req, res, next) {
-  res.render('users/cv_list', { title: 'Cv online', messages: req.flash('info'), user: req.user });
+
+  Template.all(function(err,templates){
+    res.render('users/cv_list', { title: 'Cv online', templates:templates,
+    messages: req.flash('info'), user: req.user });
+  });
+  
+  
 });
 module.exports = router;

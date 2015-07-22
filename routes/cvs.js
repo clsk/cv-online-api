@@ -13,13 +13,13 @@ router.get('/edit', auth.isLoggedIn,function(req, res) {
       title: 'Editar información profesional', 
       user: user, 
       messages: req.flash('info') ,
-      cv: response
+      cv: response || null
     };
     res.render('cv-form/edit-cv.ejs', data);
   });
 });
 
-router.post('/add', auth.isLoggedIn, function(req, res) {
+router.post('/', auth.isLoggedIn, function(req, res) {
   var cv = new CV(req.body, req.user);
   cv.save(function(err, response) {
     if (!err) {
@@ -34,7 +34,6 @@ router.get('/show/:id?',auth.isLoggedIn,function(req, res) {
   var user = req.user;
   var cv = new CV(null, user);
   cv.get(function(err, response) {
-    console.log(response);
     if(!response) {
       req.flash('info', 'Error, no tiene ningun cv asociado a su cuenta.');
       res.redirect('/cvs/edit');
@@ -50,4 +49,5 @@ router.get('/show/:id?',auth.isLoggedIn,function(req, res) {
     });
   });
 });
+
 module.exports = router;
