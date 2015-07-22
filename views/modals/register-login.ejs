@@ -75,19 +75,23 @@
             </div>
           </div>
         </div>
-      </div> 
+      </div>
   </div>
 </div>
 <script type="text/javascript">
-$(function() {
+$(document).ready(function() {
   $('#registerValidator').validator();
 
   $('#register-submit').on('click', function (e) {
+      console.log('submitting');
     var email = $('#email').val();
-    var password = $('#password-').val();
-    var ConfirmPassword = $('#confirm-password').val();
-    if (!IsEmail(email) || password != confirm-password) {
+    var password = String($('#password-').val());
+    var confirmPassword = String($('#confirm-password').val());
+    if (password != confirmPassword) {
       return false;
+    } else {
+        console.log('submit');
+        $('#login-form').submit();
     }
   });
 });
