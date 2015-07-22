@@ -1,0 +1,34 @@
+<div class="row repeater-item box box-primary" data-name="work">
+  <div class="box-header with-border">
+    <h3 class="box-title">Experiencia</h3>
+    <div class="box-tools pull-right hide">
+      <button class="btn btn-danger btn-xs btn-box-tool remove-row"><i class="glyphicon glyphicon-remove"></i></button>
+    </div><!-- /.box-tools -->
+  </div><!-- /.box-header -->
+  <div class="box-body">
+    <div class="form-group col-md-6">
+      <label class="control-label">Titulo de trabajo
+        <input type="text" class="form-control title" name="work[0][title]">
+      </label>
+    </div>
+    <div class="form-group col-md-6">
+      <label class="control-label">Nombre de la empresa
+        <input type="text" class="form-control company" name="work[0][company]">
+      </label>
+    </div>
+    <div class="form-group col-md-6">
+      <label class="control-label">Fecha de inicio
+        <input type="text" class="form-control start_date date" name="work[0][start_date]" datepicker>
+      </label>
+    </div>
+    <div class="form-group col-md-6">
+      <label class="control-label">Fecha final
+        <input type="text" class="form-control end_date date " name="work[0][end_date]" datepicker>
+      </label>
+    </div>
+    <div class="form-group col-md-12">
+      <label class="control-label">Otras informaciones</label>
+      <textarea class="form-control other_info" name="work[0][other_info]" rows="9" wysiwyg></textarea>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+<%- include('../headers/header', {user: user}); %>
+<%- include('../partials/side-bar', {user: user, activeMenuItem: 'edit-profile'}); %>
+
+<link rel="stylesheet" type="text/css" href="/plugins/datepicker/datepicker3.css">
+<section class="content-header">
+  <h1 class="text-center">Agregar información profesional</h1>
+</section>
+<div class="container-fluid">
+	<section class="content">
+		<form class="row edit-cv" method="post" action="/cvs">
+			<% if (cv) { %>
+			<input type="hidden" name="id" value="<%= cv.id %>">
+			<% } %>
+			<ul class="nav nav-pills nav-stacked col-sm-3" role="tablist">
+			  <li class="active"><a href="#experience" role="tab" data-toggle="tab">Experiencia laboral</a></li>
+			  <li><a href="#certifications" role="tab" data-toggle="tab">Certificaciones</a></li>
+			  <li><a href="#education" role="tab" data-toggle="tab">Educación</a></li>
+			  <li><a href="#interests" role="tab" data-toggle="tab">Intereses</a></li>
+			  <li><a href="#references" role="tab" data-toggle="tab">Referencias</a></li>
+			  <li><input class="btn btn-block btn-success pull-right" type="submit" value="Guardar datos"></li>
+			</ul>
+			<div class="tab-content col-md-9">
+			  <div role="tabpanel" class="tab-pane fade in active" id="experience">
+			  	<%- include('experience-tab') %>
+			  	<a href="#" class="btn btn-primary pull-right add-row">Agregar experiencia</a>
+			  </div>
+			  <div role="tabpanel" class="tab-pane fade" id="certifications">
+			  	<%- include('certifications-tab') %>
+			  </div>
+			  <div role="tabpanel" class="tab-pane fade" id="education">
+			  	<%- include('education-tab') %>
+			  	<a href="#" class="btn btn-primary pull-right add-row">Agregar educación</a>
+			  </div>
+			  <div role="tabpanel" class="tab-pane fade" id="interests">
+			  	<%- include('interests-tab') %>
+			  </div>
+			  <div role="tabpanel" class="tab-pane fade" id="references">
+			  	<%- include('references-tab') %>
+			  </div>
+			</div>
+		</form>
+	</section>
+</div>
+
+<% if (cv) { %>
+	<script type="text/javascript">
+		var cv = <%- JSON.stringify(cv) %>;
+	</script>
+<% } %>
+<script type="text/javascript" src="/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="/plugins/ckeditor/ckeditor.js"></script>
+<script src="/js/working-experience.js" type="text/javascript"></script>
+
+<%- include('../footer'); %>
