@@ -1,4 +1,4 @@
-\<div class="modal fade" id="register-login-modal">
+<div class="modal fade" id="register-login-modal">
   <div class="modal-dialog">
       <div class="panel panel-login">
         <div class="panel-heading">
@@ -12,7 +12,7 @@
           </div>
           <hr>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" id="registerValidator">
           <div class="row">
             <div class="col-lg-12">
               <form id="login-form" action="/users/login" method="post" role="form" style="display: block;">
@@ -45,20 +45,24 @@
               </form>
               <form id="register-form" action="/users/signup" method="post" role="form" style="display: none;">
                 <div class="form-group register-input">
-                  <input type="text" name="name" id="name" tabindex="4" class="form-control" placeholder="Nombre" value="">
+                  <div class="help-block with-errors"></div>
+                  <input type="text" name="name" id="name" tabindex="4" class="form-control" placeholder="Nombre" value="" data-error="Weird! Do you have a name, right?" required>
                 </div>
                 <div class="form-group register-input">
-                  <input type="text" name="lastname" id="lastname" tabindex="5" class="form-control" placeholder="Apellidos" value="">
+                  <div class="help-block with-errors"></div>
+                  <input type="text" name="lastname" id="lastname" tabindex="5" class="form-control" placeholder="Apellidos" value="" data-error="Hey! you're the first person that I know without a last name." required>
                 </div>
                 <div class="form-group register-input">
-                  <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Correo Electronico" value="">
+                  <div class="help-block with-errors"></div>
+                  <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Correo Electronico" value="" pattern="^^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$" data-error="Bruh, that email address is invalid" required>
                 </div>
                 <div class="form-group register-input">
-                  <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Contrase&ntilde;a">
+                  <input type="password" name="password" id="password-" tabindex="2" class="form-control" placeholder="Contrase&ntilde;a" required>
                 </div>
                 <div class="form-group register-input">
+                  <div class="help-block with-errors"></div>
                   <input type="password" name="confirm-password"
-                  id="confirm-password" tabindex="3" class="form-control" placeholder="Confirmar Contrase&ntilde;a">
+                  id="confirm-password" tabindex="3" class="form-control" data-match="#password-" data-match-error="Whoops, these don't match" placeholder="Confirmar Contrase&ntilde;a" required>
                 </div>
                 <div class="form-group">
                   <div class="row">
@@ -74,3 +78,17 @@
       </div> 
   </div>
 </div>
+<script type="text/javascript">
+$(function() {
+  $('#registerValidator').validator();
+
+  $('#register-submit').on('click', function (e) {
+    var email = $('#email').val();
+    var password = $('#password-').val();
+    var ConfirmPassword = $('#confirm-password').val();
+    if (!IsEmail(email) || password != confirm-password) {
+      return false;
+    }
+  });
+});
+</script>
