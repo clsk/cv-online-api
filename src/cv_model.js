@@ -122,11 +122,16 @@ module.exports = function(data, user) {
 
   this.get = function(cb) {
     GLOBAL.sqlConnection.query('SELECT * FROM CVs WHERE user_id = ? LIMIT 1', [self.userId], function(err, response) {
+      console.log('get ',err,response);
       if (err || !response.length) {
         cb(true);
         return false;
       }
       db.getCVByName(response[0].name, cb);
     })
+  }
+
+  this.setTemplate = function(id,cb){
+    GLOBAL.sqlConnection.query('UPDATE CVs set template_id=? WHERE user_id = ? ',[id,self.userId],cb);
   }
 };

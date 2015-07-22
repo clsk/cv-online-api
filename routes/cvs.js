@@ -29,8 +29,7 @@ router.post('/', auth.isLoggedIn, function(req, res) {
   });
 });
 
-router.get('/show/:id?',auth.isLoggedIn,function(req, res) {
-  var templateId = typeof req.params.id != 'undefined' ? req.params.id : 1; 
+router.get('/show/:id?',auth.isLoggedIn,function(req, res) { 
   var user = req.user;
   var cv = new CV(null, user);
   cv.get(function(err, response) {
@@ -38,6 +37,8 @@ router.get('/show/:id?',auth.isLoggedIn,function(req, res) {
       req.flash('info', 'Error, no tiene ningun cv asociado a su cuenta.');
       res.redirect('/cvs/edit');
     }
+    console.log('response',response);
+    var templateId = typeof req.params.id != 'undefined' ? req.params.id : response.template_id;
     Template.get(templateId,function(err,template){
       res.render('cv_show', {
         title: 'Ver CV', 
@@ -50,4 +51,17 @@ router.get('/show/:id?',auth.isLoggedIn,function(req, res) {
   });
 });
 
+router.get('/setTemplate/:id',auth.isLoggedIn,function(req, res) {
+  var cv = new CV(null, req.user);
+  cv.setTemplate(req.params.id, function(err, response) {
+    console.log(err, response);
+    if(!err){
+      req.flash('info', 'Este es su nuevo cv predeterminado.');
+    }
+    else{
+      req.flash('info','Hubo un error mientras se cambiaba de cv.');
+    }
+    res.redirect('/cvs/show');
+  });
+});
 module.exports = router;
