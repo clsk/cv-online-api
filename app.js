@@ -10,10 +10,6 @@ var session      = require('express-session');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-
 
 // set up our express application
 app.use(cookieParser()); // read cookies (needed for auth)
