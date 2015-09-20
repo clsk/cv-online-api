@@ -5,31 +5,24 @@ var port     = process.env.PORT || 8080;
 var bodyParser   = require('body-parser');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+var sequelize = require('sequelize');
+var FB = require('./fb');
+var models = require('./models');
 
-app.use(function (req, res, next) { // attach req to all views
-    res.locals.req = req;
-    res.locals.baseURL = '//' + req.hostname;
-    if (app.settings.port != 80 && app.settings.port != 443) {
-        res.locals.baseURL += ':' + app.settings.port;
-    }
-    res.locals.baseURL += '/';
-    next();
-});
+// Create tables if necessary
+models.sql.sync()
 
-
-// uncomment after placing your favicon in /public
-app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 var users = require('./routes/users');
-var templates = require('./routes/templates');
-var cvs = require('./routes/cvs');
+//var templates = require('./routes/templates');
+//var cvs = require('./routes/cvs');
 
-app.use('/users', users);
-app.use('/templates', admin);
-app.use('/cvs',cvs);
+app.use('/user', users);
+//app.use('/templates', admin);
+//app.use('/cvs',cvs);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
