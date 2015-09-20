@@ -1,7 +1,6 @@
 module.exports = function(sql, DataTypes) {
     var Session = sql.define("Session", {
-        id: { type: DataTypes.UUID, primaryKey: true },
-        fb_id: { type: DataTypes.STRING, allowNull: false },
+        id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
         fb_token: { type: DataTypes.STRING, allowNull: false }
     }, {
         classMethods: {

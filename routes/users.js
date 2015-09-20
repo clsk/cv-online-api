@@ -13,11 +13,7 @@ var models = require('../models');
 //});
 
 router.post('/signup', function(req, res) {
-    console.log('entered signup');
-    // 
-    //
     // Extend FB Token
-
     var token = req.body.fb_token
     var is_admin = req.body.is_admin | false
     if (token == null) {
@@ -30,13 +26,11 @@ router.post('/signup', function(req, res) {
         fb_exchange_token: token
     }, function (response) {
         if(!response || response.error) {
-            console.log(!response ? 'error occurred' : response.error);
             res.status(401).json({message: 'Facebook Error: ' + response.error.message});
             return;
         }
 
         var accessToken = response.access_token;
-        console.log(accessToken);
         FB.setAccessToken(accessToken);
         FB.api('me', {fields: ['id', 'first_name', 'last_name', 'website', 'email']}, function(response) {
             if(!response || response.error) {
@@ -45,10 +39,12 @@ router.post('/signup', function(req, res) {
                 return;
             }
 
-            models.Users.create({fb_id: response.id, fb_token: accessToken, name: response.first_name,
+            models.Users.create({fb_id: response.id, name: response.first_name,
                                 webpage: response.website, email: response.email, is_admin: is_admin})
                                 .then(function(user) {
-                                    res.json(user.toJSON());
+                                    models.Sessions.create({user_fb_id: user.fb_id, fb_token: accessToken}).then(function(session) {
+                                        res.json({session_id: session.id, fb_token: session.fb_token, user_data: user.toJSON()});
+                                    });
             });
         });
     });
