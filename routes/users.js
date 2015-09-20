@@ -50,25 +50,46 @@ router.post('/signup', function(req, res) {
     });
 });
 
-//router.post('/login', passport.authenticate('local-login', {
-        //successRedirect : '/home', // redirect to the secure profile section
-        //failureRedirect : '/', // redirect back to the signup page if there is an error
-        //failureFlash : true // allow flash messages
-    //}),
-    //function(req, res) {
-        //// if (req.body.remember) {
-        ////   req.session.cookie.maxAge = 1000 * 60 * 3;
-        //// } else {
-        ////   req.session.cookie.expires = false;
-        //// }
-    //res.redirect('/');
-//});
 
-//router.get('/logout', function(req, res) {
-    //req.logout();
-    //req.session.destroy();
-    //res.redirect('/');
-//});
+router.post('/login', function(req, res) {
+    // Extend FB Token
+    var token = req.body.fb_token
+    if (token == null) {
+        req.status(401).json({message: "no fb_token received"});
+    }
+    FB.api('oauth/access_token', {
+        client_id: '547949358692521',
+        client_secret: '7164c6b8a3135fb2a8e563172719de79',
+        grant_type: 'fb_exchange_token',
+        fb_exchange_token: token
+    }, function (response) {
+        if(!response || response.error) {
+            res.status(401).json({message: 'Facebook Error: ' + response.error.message});
+            return;
+        }
+
+        var accessToken = response.access_token;
+        FB.setAccessToken(accessToken);
+        FB.api('me', {fields: ['id']}, function(response) {
+            if(!response || response.error) {
+                console.log(!response ? 'error occurred' : response.error);
+                res.status(401).json({message: 'Facebook Error: ' + response.error.message});
+                return;
+            }
+
+            models.Users.findById(response.id).then(function(user) {
+                if (user == null) {
+                    res.status(401).json({message: 'No user registered with that Facebook ID'});
+                } else {
+                    models.Sessions.create({user_fb_id: user.fb_id, fb_token: accessToken}).then(function(session) {
+                        res.json({session_id: session.id, fb_token: session.fb_token, user_data: user.toJSON()});
+                    });
+                }
+            });
+        });
+    });
+});
+
 
 //router.post('/changePassword', auth.isLoggedIn, function(req, res) {
     //var query = "SELECT * FROM Users where email = ?";
