@@ -6,6 +6,8 @@ var passwordGenerator = require('password-generator');
 var FB = require('../fb');
 var models = require('../models');
 
+var FB_CLIENT_ID = '547949358692521';
+var FB_CLIENT_SECRET = '7164c6b8a3135fb2a8e563172719de79';
 
 /* GET users listing. */
 //router.get('/', function(req, res, next) {
@@ -20,8 +22,8 @@ router.post('/signup', function(req, res) {
         req.status(401).json({message: "no fb_token received"});
     }
     FB.api('oauth/access_token', {
-        client_id: '547949358692521',
-        client_secret: '7164c6b8a3135fb2a8e563172719de79',
+        client_id: FB_CLIENT_ID,
+        client_secret: FB_CLIENT_SECRET,
         grant_type: 'fb_exchange_token',
         fb_exchange_token: token
     }, function (response) {
@@ -63,8 +65,8 @@ router.post('/login', function(req, res) {
         req.status(401).json({message: "no fb_token received"});
     }
     FB.api('oauth/access_token', {
-        client_id: '547949358692521',
-        client_secret: '7164c6b8a3135fb2a8e563172719de79',
+        client_id: FB_CLIENT_ID,
+        client_secret: FB_CLIENT_SECRET,
         grant_type: 'fb_exchange_token',
         fb_exchange_token: token
     }, function (response) {
@@ -96,83 +98,27 @@ router.post('/login', function(req, res) {
 });
 
 
-//router.post('/changePassword', auth.isLoggedIn, function(req, res) {
-    //var query = "SELECT * FROM Users where email = ?";
-    //GLOBAL.sqlConnection.query(query, [req.user.email], function(err, rows) {
-        //if (err) {
-            //req.flash('info', 'Error ejecutando query de MySQL');
-            //res.redirect('/home');
-        //} else if (!rows) {
-            //req.fash('info', 'Usuario o clave invalido!');
-            //res.redirect('/home');
-        //} else {
-            //if (!bcrypt.compareSync(req.body.password, rows[0].password)) {
-                //req.flash('info', 'Usuario o clave invalido!');
-                //res.redirect('/home');
-            //} else {
-               //var q = "UPDATE Users set password = ? where id = ?";
-               //GLOBAL.sqlConnection.query(q, [bcrypt.hashSync(req.body.newpassword, null, null), req.user.id], function(err, rows) {
-                   //res.redirect('/home');
-               //});
-            //}
-        //}
-    //});
-//});
+router.delete('/delete', function(req, res) {
+    var session_id = req.headers['x-session-id'];
+    if (session_id == null || session_id == 0) {
+        res.status(401).json({message: 'No session id header received'});
+        return;
+    }
 
-//router.post('/forgotPassword', function(req, res) {
-    //var email = req.body.emailc;
-    //var query = "SELECT * FROM Users where email = ?";
-    //GLOBAL.sqlConnection.query(query, [email], function(err, rows) {
-        //if (err) {
-            //req.flash('info', 'Error ejecutando query de MySQL');
-            //res.redirect('/');
-        //} else if (!rows) {
-            //req.fash('info', 'Usuario o clave invalido!');
-            //res.redirect('/');
-        //} else {
-            //var newPassword = passwordGenerator(12, false);
-            //var q = "UPDATE Users set password = ? where email = ?";
-            //GLOBAL.sqlConnection.query(q, [bcrypt.hashSync(newPassword, null, null), email], function(err, rows) {
-               //var transporter = nodemailer.createTransport(mailConfig);
-               //var mailOptions = {
-                   //from: mailConfig.fromAddress, // sender address
-                   //to: email, // list of receivers
-                   //subject: 'CV Online Service Nueva Clave', // Subject line
-                   //text: 'Se ha generado la siguiente clave para usted ' + newPassword, // plaintext body
-                   //html: '<b>Se ha generado la siguiente clave para usted: ' + newPassword + '</b>' // html body
-               //};
-
-               //// send mail with defined transport object
-               //transporter.sendMail(mailOptions, function(error, info){
-                   //if(error){
-                       //return console.log(error);
-                   //}
-
-                   //res.redirect('/');
-               //});
-           //});
-        //}
-    //});
-//});
-
-//router.post('/deleteAccount', auth.isLoggedIn,  function(req, res) {
-    //// find a user whose email is the same as the forms email
-    //// we are checking to see if the user trying to login already exists
-    //GLOBAL.sqlConnection.query("SELECT * FROM Users WHERE email = ?", [req.user.email], function(err, rows) {
-        //if (err)
-            //return done(err);
-        //if (!rows.length) {
-            //return res.redirect('home', req.flash('info', 'That user do not exists.'));
-        //} else {
-            //console.log("Deleting user: "+req.user.email);
-            //var updateQuery = "UPDATE Users set active = 0 WHERE email = ?";
-            //console.log(updateQuery);
-            //GLOBAL.sqlConnection.query(updateQuery,[req.user.email], function(err,rows){
-                //res.redirect('/');
-            //});
-        //}
-    //});
-//});
+    models.Sessions.findById(session_id).then(function(session) {
+        if (session == null) {
+            res.status(401).json({message: "Invalid Session ID"});
+            return;
+        }
+        models.Users.destroy({ where: { fb_id: session.user_fb_id}}).then(function(rows) {
+            if (rows == 0) {
+                res.status(500).json({message: 'Could not find user. (But found session)'});
+            } else {
+                res.sendStatus(200);
+            }
+        });
+    });
+});
 
 //router.get('/Edit', auth.isLoggedIn, function(req, res, next) {
   //var query = "SELECT * FROM Users where id = ?";
