@@ -14,7 +14,7 @@ var FB_CLIENT_SECRET = '7164c6b8a3135fb2a8e563172719de79';
   //res.send('respond with a resource');
 //});
 
-router.post('/signup', function(req, res) {
+router.post('/create', function(req, res) {
     // Extend FB Token
     var token = req.body.fb_token
     var is_admin = req.body.is_admin | false
@@ -120,48 +120,41 @@ router.delete('/delete', function(req, res) {
     });
 });
 
-//router.get('/Edit', auth.isLoggedIn, function(req, res, next) {
-  //var query = "SELECT * FROM Users where id = ?";
-    //GLOBAL.sqlConnection.query(query, [req.user.id], function(err, rows) {
-        //if (err) {
-            //req.flash('info', 'Error ejecutando query de MySQL');
-            //res.redirect('/');
-        //} else if (!rows) {
-            //req.fash('info', 'Usuario o clave invalido!');
-            //res.redirect('/');
-        //} else {
-            //console.log(rows);
-            //res.render('edit_profile', { title: 'Editar Perfil', user: req.user, userEntity: rows , messages: req.flash('info') });
-        //}
-    //});
-//});
+router.put('/update', function(req, res){
+    var session_id = req.headers['x-session-id'];
+    if (session_id == null || session_id == 0) {
+        res.status(401).json({message: 'No session id header received'});
+        return;
+    }
 
-//router.post('/Update', auth.isLoggedIn, function(req, res){
-  //var name = (typeof req.body.name === 'undefined') ? "" : req.body.name;
-  //var lastname = (typeof req.body.lastname === 'undefined') ? "" :req.body.lastname;
-  //var email = (typeof req.body.email === 'undefined') ? "" :req.body.email;
-  //var telephone = (typeof req.body.telefonos === 'undefined') ? "" :req.body.telefonos;
-  //var paginas = (typeof req.body.paginas === 'undefined') ? "" :req.body.paginas;
+    models.Sessions.findById(session_id).then(function(session) {
+        if (session == null) {
+            res.status(401).json({message: "Invalid Session ID"});
+            return;
+        }
 
-  //var q = "UPDATE Users set name  = ?, lastname = ?, email = ?, telephone = ?, webpage = ? where id = ?";
-  //GLOBAL.sqlConnection.query(q, [name, lastname, email, telephone, paginas, req.user.id], function(err, rows) {
-      //req.method = 'get'; 
-      //res.redirect('/home'); 
-  //});
+        var user = session.getUser().then(function(user) {
+            if (user == null) {
+                res.status(500).json({message: 'Could not find user. (But found session)'});
+                return;
+            }
 
-//});
+            var attributes = ["name", "lastname", "webpage", "telephone", "email"];
+            var attributesLength = attributes.length;
+            console.log(req.body);
+            for (i = 0; i < attributesLength; i++) {
+                if (req.body[attributes[i]] != null) {
+                    user[attributes[i]] = req.body[attributes[i]];
+                    console.log('setting attribute ' + attributes[i] + 'to: ' + req.body[attributes[i]]);
+                }
+            }
 
-//router.get('/view-profile', function(req, res, next) {
-  //res.render('users/user_profile', { title: 'Cv Online', messages: req.flash('info'), user: req.user });
-//});
+            user.save();
+            res.sendStatus(200);
 
-//router.get('/change-cv', function(req, res, next) {
+        });
+    });
 
-  //Template.all(function(err,templates){
-    //res.render('users/cv_list', { title: 'Cv online', templates:templates,
-    //messages: req.flash('info'), user: req.user });
-  //});
-  
-  
-//});
+});
+
 module.exports = router;
