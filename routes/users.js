@@ -45,6 +45,11 @@ router.post('/signup', function(req, res) {
                                     models.Sessions.create({user_fb_id: user.fb_id, fb_token: accessToken}).then(function(session) {
                                         res.json({session_id: session.id, fb_token: session.fb_token, user_data: user.toJSON()});
                                     });
+            }).catch(function(error) {
+                if (error.name == 'SequelizeUniqueConstraintError') {
+                    res.status(400).json({message: 'User has already signed up'});
+                }
+
             });
         });
     });
