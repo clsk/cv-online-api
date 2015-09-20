@@ -5,15 +5,17 @@ create database if not exists Resumes;
 use Resumes;
 
 create table if not exists Users(
-   id integer primary key auto_increment,
+   fb_id varchar(300) PRIMARY KEY,
    email varchar(100) unique,
-   password varchar(100),
    name varchar(100),
-   lastname varchar(100),
-   active  tinyint(1) default 1,
-   telephone varchar(100),
-   webpage varchar(200),
+   website varchar(200),
    is_admin tinyint(1) default 0
+)engine=innodb;
+
+create table if not exists Sessions(
+    session_id = uuid,
+    fb_id varchar(300),
+    CONSTRAINT fb_id_user_fb_id_fk FOREIGN KEY(fb_id) REFERENCES Users(fb_id)
 )engine=innodb;
 
 create table if not exists Templates(
@@ -33,6 +35,8 @@ create table if not exists CVs(
     user_id integer,
     name varchar(100),
     template_id integer,
+    mobile_template_id integer,
+    has_picture boolean,
     created_on timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_updated timestamp,
     CONSTRAINT cv_template_id_fk FOREIGN KEY (template_id) REFERENCES Templates (id)
