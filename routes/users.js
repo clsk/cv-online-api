@@ -13,31 +13,45 @@ var models = require('../models');
 //});
 
 router.post('/signup', function(req, res) {
+    console.log('entered signup');
     // 
     //
     // Extend FB Token
 
-    var at = 'CAAHyW2bhOKkBAHW0snZAabMhWScwMpXGIuYoUcYZC87LtFgClFqCLRZANxmWD1hiA2LwJ8ZARhZCZCZAPZBqt183dLrdPpsgVHnh8p14OdvLrEuS1QpfgJWjNzqGHKN6pdWCB8Wg28anrSuvsatkaTYQqbIKz9nJ4GTCwJdBFyXZAOPqq1mgegP56YUm1iZBYGPQ7ZB1uSsH4ZBLXwZDZD';
+    var token = req.body.fb_token
+    var is_admin = req.body.is_admin | false
+    if (token == null) {
+        req.status(401).json({message: "no fb_token received"});
+    }
     FB.api('oauth/access_token', {
         client_id: '547949358692521',
         client_secret: '7164c6b8a3135fb2a8e563172719de79',
         grant_type: 'fb_exchange_token',
-        fb_exchange_token: at
-    }, function (res) {
-        if(!res || res.error) {
-            console.log(!res ? 'error occurred' : res.error);
+        fb_exchange_token: token
+    }, function (response) {
+        if(!response || response.error) {
+            console.log(!response ? 'error occurred' : response.error);
+            res.status(401).json({message: 'Facebook Error: ' + response.error.message});
             return;
         }
 
-        var accessToken = res.access_token;
+        var accessToken = response.access_token;
         console.log(accessToken);
-        console.log(expires);
+        FB.setAccessToken(accessToken);
+        FB.api('me', {fields: ['id', 'first_name', 'last_name', 'website', 'email']}, function(response) {
+            if(!response || response.error) {
+                console.log(!response ? 'error occurred' : response.error);
+                res.status(401).json({message: 'Facebook Error: ' + response.error.message});
+                return;
+            }
 
-        res.json({fb_token: accessToken});
-
+            models.Users.create({fb_id: response.id, fb_token: accessToken, name: response.first_name,
+                                webpage: response.website, email: response.email, is_admin: is_admin})
+                                .then(function(user) {
+                                    res.json(user.toJSON());
+            });
+        });
     });
-
-
 });
 
 //router.post('/login', passport.authenticate('local-login', {
