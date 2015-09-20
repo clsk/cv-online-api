@@ -17,12 +17,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 var users = require('./routes/users');
-//var templates = require('./routes/templates');
+var templates = require('./routes/templates');
 //var cvs = require('./routes/cvs');
 
 app.use('/user', users);
-//app.use('/templates', admin);
-//app.use('/cvs',cvs);
+app.use('/template', templates);
+//app.use('/cv',cvs);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
