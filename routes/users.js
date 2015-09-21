@@ -19,7 +19,7 @@ router.post('/create', function(req, res) {
     var token = req.body.fb_token
     var is_admin = req.body.is_admin | false
     if (token == null) {
-        req.status(401).json({message: "no fb_token received"});
+        res.status(401).json({message: "no fb_token received"});
     }
     FB.api('oauth/access_token', {
         client_id: FB_CLIENT_ID,
@@ -62,7 +62,7 @@ router.post('/login', function(req, res) {
     // Extend FB Token
     var token = req.body.fb_token
     if (token == null) {
-        req.status(401).json({message: "no fb_token received"});
+        res.status(401).json({message: "no fb_token received"});
     }
     FB.api('oauth/access_token', {
         client_id: FB_CLIENT_ID,
