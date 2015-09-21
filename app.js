@@ -16,6 +16,15 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.all("/*", function(req, res, next) {
+  console.log("added headers");
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, OPTION");
+  return next();
+});
+
+
 var users = require('./routes/users');
 var templates = require('./routes/templates');
 //var cvs = require('./routes/cvs');
@@ -50,6 +59,7 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
 
 
 module.exports = app;
