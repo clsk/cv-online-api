@@ -120,7 +120,7 @@ router.delete('/delete', function(req, res) {
     });
 });
 
-router.put('/update', function(req, res){
+router.put('/edit', function(req, res){
     var session_id = req.headers['x-session-id'];
     if (session_id == null || session_id == 0) {
         res.status(401).json({message: 'No session id header received'});
@@ -154,7 +154,6 @@ router.put('/update', function(req, res){
 
         });
     });
-
 });
 
 module.exports = router;

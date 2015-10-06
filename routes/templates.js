@@ -14,24 +14,57 @@ router.post('/create', function(req, res, next) {
             res.status(401).json({message: "Invalid Session ID"});
             return;
         }
+        models.Users.findById(session.user_fb_id).then(function(user) {
+            if (user == null) {
+                res.status(401).json({message: "Could not find admin user"});
+                return;
+            }
 
-        // Check for required fields
-        if (req.body.name == null) {
-            res.status(400).json({message: 'Required field name not present'});
-            return;
-        }
+            if (user.is_admin == false) {
+                res.status(401).json({message: "Need admin rights to do this"});
+                return;
+            }
 
-        models.Templates.create({name: req.body.name,
-                                description: req.body.description,
-                                html: req.body.html,
-                                css: req.body.css,
-                                created_by: session.user_fb_id,
-                                device: req.body.device || 'web'
-                                }).then(function(template) {
-            res.json({id: template.id});
+            // Check for required fields
+            if (req.body.name == null) {
+                res.status(400).json({message: 'Required field name not present'});
+                return;
+            }
+
+            models.Templates.create({name: req.body.name,
+                                    description: req.body.description,
+                                    html: req.body.html,
+                                    css: req.body.css,
+                                    created_by: session.user_fb_id,
+                                    device: req.body.device || 'web'
+                                    }).then(function(template) {
+                res.json({id: template.id});
+            });
         });
     });
 });
+
+router.post('/:template_id/edit', function(req, res, next) {
+
+    //if (typeof req.body.inputTemplateId == 'undefined') {
+        //GLOBAL.sqlConnection.query("INSERT INTO Templates (created_by, name, html, css) VALUES (" + req.user.id + ", ?, ?, ?)", [req.body.inputTemplateName, req.body.htmlText, req.body.cssText], function(err, result) {
+            //var id = result.insertId;
+            //console.log(JSON.stringify(result));
+            //res.redirect('/admin/edit_template/'+id);
+        //});
+    //} else {
+        //GLOBAL.sqlConnection.query("UPDATE Templates SET html=?,css=? WHERE id=? ", [req.body.htmlText, req.body.cssText, req.body.inputTemplateId], function(err, result) {
+            //if (err) {
+                //req.flash('info', err);
+            //} else if (result.affectedRows < 1) {
+                //req.flash('info', 'No se pudieron guardar los cambios');
+            //}
+            //res.redirect('/admin/edit_template/'+req.body.inputTemplateId);
+        //});
+
+    //}
+});
+
 
 
 /* GET home page. */
@@ -74,24 +107,5 @@ router.post('/create', function(req, res, next) {
     //});
 //});
 
-//router.post('/saveTemplate', auth.isLoggedInAsAdmin, function(req, res, next) {
-    //if (typeof req.body.inputTemplateId == 'undefined') {
-        //GLOBAL.sqlConnection.query("INSERT INTO Templates (created_by, name, html, css) VALUES (" + req.user.id + ", ?, ?, ?)", [req.body.inputTemplateName, req.body.htmlText, req.body.cssText], function(err, result) {
-            //var id = result.insertId;
-            //console.log(JSON.stringify(result));
-            //res.redirect('/admin/edit_template/'+id);
-        //});
-    //} else {
-        //GLOBAL.sqlConnection.query("UPDATE Templates SET html=?,css=? WHERE id=? ", [req.body.htmlText, req.body.cssText, req.body.inputTemplateId], function(err, result) {
-            //if (err) {
-                //req.flash('info', err);
-            //} else if (result.affectedRows < 1) {
-                //req.flash('info', 'No se pudieron guardar los cambios');
-            //}
-            //res.redirect('/admin/edit_template/'+req.body.inputTemplateId);
-        //});
-
-    //}
-//});
 
 module.exports = router;
