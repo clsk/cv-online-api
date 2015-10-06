@@ -45,27 +45,45 @@ router.post('/create', function(req, res, next) {
 });
 
 router.post('/:template_id/edit', function(req, res, next) {
+    var session_id = req.headers['x-session-id'];
+    if (session_id == null || session_id == 0) {
+        res.status(401).json({message: 'No session id header received'});
+        return;
+    }
 
-    //if (typeof req.body.inputTemplateId == 'undefined') {
-        //GLOBAL.sqlConnection.query("INSERT INTO Templates (created_by, name, html, css) VALUES (" + req.user.id + ", ?, ?, ?)", [req.body.inputTemplateName, req.body.htmlText, req.body.cssText], function(err, result) {
-            //var id = result.insertId;
-            //console.log(JSON.stringify(result));
-            //res.redirect('/admin/edit_template/'+id);
-        //});
-    //} else {
-        //GLOBAL.sqlConnection.query("UPDATE Templates SET html=?,css=? WHERE id=? ", [req.body.htmlText, req.body.cssText, req.body.inputTemplateId], function(err, result) {
-            //if (err) {
-                //req.flash('info', err);
-            //} else if (result.affectedRows < 1) {
-                //req.flash('info', 'No se pudieron guardar los cambios');
-            //}
-            //res.redirect('/admin/edit_template/'+req.body.inputTemplateId);
-        //});
+    models.Sessions.findById(session_id).then(function(session) {
+        if (session == null) {
+            res.status(401).json({message: "Invalid Session ID"});
+            return;
+        }
+        models.Users.findById(session.user_fb_id).then(function(user) {
+            if (user == null) {
+                res.status(401).json({message: "Could not find admin user"});
+                return;
+            }
 
-    //}
+            if (user.is_admin == false) {
+                res.status(401).json({message: "Need admin rights to do this"});
+                return;
+            }
+
+            models.Templates.findById(req.params.template_id).then(function(template) {
+                var validParameters  = ['name', 'description', 'html', 'css', 'device'];
+                for (var param in req.body) {
+                    if (req.body.hasOwnProperty(param) && validParameters.indexOf(param) != -1) {
+                        template[param] = req.body[param];
+                    } else {
+                        res.status(400).json({message: "Invalid parameter " + param });
+                        return;
+                    }
+                }
+
+                template.save();
+                res.sendStatus(200);
+            });
+        });
+    });
 });
-
-
 
 /* GET home page. */
 //router.get('/list_templates', auth.isLoggedIn, function(req, res, next) {
