@@ -85,19 +85,12 @@ router.post('/:template_id/edit', function(req, res, next) {
     });
 });
 
-/* GET home page. */
-//router.get('/list_templates', auth.isLoggedIn, function(req, res, next) {
-    //GLOBAL.sqlConnection.query("SELECT id,name FROM Templates", function(err, rows) {
-        //if (err) {
-            //req.flash('info', err);
-            //res.redirect('/home');
-        //} else {
-
-            //res.render('list_templates', {title: 'List Templates', user: req.user, templates: rows, messages: req.flash('info') });
-        //}
-    //});
-//});
-
+router.get('/list', function(req, res, next) {
+    models.Templates.findAll().then(function(all_templates) {
+        var templates = all_templates.map(function(template) { return template.toJSON(); });
+        res.status(200).json({ templates: templates });
+    });
+});
 
 //router.get('/edit_template/:template_id?', auth.isLoggedInAsAdmin, function(req, res, next) {
     //var cv = {};
