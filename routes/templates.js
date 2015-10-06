@@ -92,31 +92,15 @@ router.get('/list', function(req, res, next) {
     });
 });
 
-//router.get('/edit_template/:template_id?', auth.isLoggedInAsAdmin, function(req, res, next) {
-    //var cv = {};
-    //db.getCVByName('Test CV', function (err, cv) {
-        //if (err) {
-            //req.flash('info', err);
-            //res.redirect('/home');
-        //}
-
-        //if (typeof req.params.template_id != 'undefined') {
-            //GLOBAL.sqlConnection.query("SELECT name,html,css from Templates WHERE id = ?", [req.params.template_id], function(err, rows) {
-                //if (err) {
-                    //req.flash('info', err);
-                    //res.redirect('/home');
-                //} else if (rows < 1) {
-                    //req.flash('info', 'Error: No se pudo encontrar ese Tema');
-                    //res.redirect('/home');
-                //}
-
-                //res.render('edit_template', { title: 'Edit Template', user: req.user, cv: cv, template_id: req.params.template_id, template: rows[0], messages: req.flash('info')});
-            //});
-        //} else {
-            //res.render('edit_template', { title: 'Edit Template', user: req.user, cv: cv, template_id: req.params.template_id, messages: req.flash('info')});
-        //}
-    //});
-//});
+router.get('/:template_id', function(req, res, next) {
+    models.Templates.findById(req.params.template_id).then(function(template) {
+        if (template == null) {
+            res.status(404).json({message: "Template not found"});
+        } else {
+            res.status(200).json(template.toJSON());
+        }
+    });
+});
 
 
 module.exports = router;
