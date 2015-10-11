@@ -92,6 +92,24 @@ router.post('/login', function(req, res) {
     });
 });
 
+router.post('/logout', function(req, res){
+    var session_id = req.headers['x-session-id'];
+    if (session_id == null || session_id == 0) {
+        res.status(401).json({message: 'No session id header received'});
+        return;
+    }
+
+    models.Sessions.findById(session_id).then(function(session) {
+        if (session == null) {
+            res.status(401).json({message: "Invalid Session ID"});
+            return;
+        }
+
+        session.destroy();
+
+        res.sendStatus(200);
+    });
+});
 
 router.delete('/delete', function(req, res) {
     var session_id = req.headers['x-session-id'];
