@@ -196,5 +196,37 @@ router.put('/:user_id/edit', function(req, res){
     });
 });
 
+router.get('/list', function(req, res, next) {
+    var session_id = req.headers['x-session-id'];
+    if (session_id == null || session_id == 0) {
+        res.status(401).json({message: 'No session id header received'});
+        return;
+    }
+
+    models.Sessions.findById(session_id).then(function(session) {
+        if (session == null) {
+            res.status(401).json({message: "Invalid Session ID"});
+            return;
+        }
+
+        session.getUser().then(function(user) {
+            if (user == null) {
+                res.status(500).json({message: 'Could not find user. (But found session)'});
+                return;
+            }
+
+            if (user.is_admin == false) {
+                res.status(401).json({message: "Need admin rights to do this"});
+                return;
+            }
+
+            models.Users.findAll().then(function(all_users) {
+                var users = all_users.map(function(user) { return user.toJSON(); });
+                res.status(200).json({ users: users });
+            });
+        });
+    });
+});
+
 
 module.exports = router;
