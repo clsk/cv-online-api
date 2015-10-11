@@ -9,11 +9,6 @@ var models = require('../models');
 var FB_CLIENT_ID = '547949358692521';
 var FB_CLIENT_SECRET = '7164c6b8a3135fb2a8e563172719de79';
 
-/* GET users listing. */
-//router.get('/', function(req, res, next) {
-  //res.send('respond with a resource');
-//});
-
 router.post('/create', function(req, res) {
     // Extend FB Token
     var token = req.body.fb_token
@@ -141,11 +136,9 @@ router.put('/edit', function(req, res){
 
             var attributes = ["name", "lastname", "webpage", "telephone", "email"];
             var attributesLength = attributes.length;
-            console.log(req.body);
             for (i = 0; i < attributesLength; i++) {
                 if (req.body[attributes[i]] != null) {
                     user[attributes[i]] = req.body[attributes[i]];
-                    console.log('setting attribute ' + attributes[i] + 'to: ' + req.body[attributes[i]]);
                 }
             }
 
@@ -155,5 +148,53 @@ router.put('/edit', function(req, res){
         });
     });
 });
+
+router.put('/:user_id/edit', function(req, res){
+    var session_id = req.headers['x-session-id'];
+    if (session_id == null || session_id == 0) {
+        res.status(401).json({message: 'No session id header received'});
+        return;
+    }
+
+    models.Sessions.findById(session_id).then(function(session) {
+        if (session == null) {
+            res.status(401).json({message: "Invalid Session ID"});
+            return;
+        }
+
+        session.getUser().then(function(user) {
+            if (user == null) {
+                res.status(500).json({message: 'Could not find user. (But found session)'});
+                return;
+            }
+
+            if (user.is_admin == false) {
+                res.status(401).json({message: "Need admin rights to do this"});
+                return;
+            }
+
+            models.Users.findById(req.params.user_id).then(function(edit_user) {
+
+                if (edit_user == null) {
+                    res.status(404).json({message: "Could not find user with id " + req.params.user_id});
+                    return;
+                }
+
+                var attributes = ["name", "lastname", "webpage", "telephone", "email", "is_admin"];
+                var attributesLength = attributes.length;
+                for (i = 0; i < attributesLength; i++) {
+                    if (req.body[attributes[i]] != null) {
+                        edit_user[attributes[i]] = req.body[attributes[i]];
+                    }
+                }
+
+                edit_user.save();
+                res.sendStatus(200);
+            });
+
+        });
+    });
+});
+
 
 module.exports = router;

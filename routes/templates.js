@@ -44,7 +44,7 @@ router.post('/create', function(req, res, next) {
     });
 });
 
-router.post('/:template_id/edit', function(req, res, next) {
+router.post('/:template_id/edit' ,function(req, res, next) {
     var session_id = req.headers['x-session-id'];
     if (session_id == null || session_id == 0) {
         res.status(401).json({message: 'No session id header received'});
