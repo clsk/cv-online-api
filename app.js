@@ -20,7 +20,7 @@ app.all("/*", function(req, res, next) {
   console.log("added headers");
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With");
-  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, OPTION");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, OPTION, DELETE");
   return next();
 });
 
