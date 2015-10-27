@@ -1,15 +1,11 @@
 module.exports = function(sql, DataTypes) {
-    var Template = sql.define("Template", {
+    var CV = sql.define("CV", {
         id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-        name: { type: DataTypes.STRING, allowNull: false },
-        description: DataTypes.STRING,
-        html: DataTypes.TEXT,
-        css: DataTypes.TEXT,
-        device: DataTypes.ENUM('mobile', 'web')
+        name: { type: DataTypes.STRING, allowNull: true },
     }, {
         classMethods: {
             associate: function(models) {
-                Session.belongsTo(models.Users, {foreignKey: 'created_by'});
+                CV.belongsTo(models.Users, {foreignKey: 'created_by'});
             },
 
             getUser: function(callback) {
@@ -22,5 +18,5 @@ module.exports = function(sql, DataTypes) {
     });
 
 
-    return Template;
+    return CV;
 };
