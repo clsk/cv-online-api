@@ -6,6 +6,7 @@ module.exports = function(sql, DataTypes) {
         classMethods: {
             associate: function(models) {
                 CV.belongsTo(models.Users, {foreignKey: 'created_by'});
+                CV.belongsTo(models.Templates, {foreignKey: 'template_id'});
             },
 
             getUser: function(callback) {

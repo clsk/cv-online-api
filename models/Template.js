@@ -5,11 +5,14 @@ module.exports = function(sql, DataTypes) {
         description: DataTypes.STRING,
         html: DataTypes.TEXT,
         css: DataTypes.TEXT,
-        device: DataTypes.ENUM('mobile', 'web')
+        mobile_html: DataTypes.TEXT,
+        mobile_css: DataTypes.TEXT,
+        preview_image_url: DataTypes.STRING,
+        mobile_preview_image_url: DataTypes.STRING,
     }, {
         classMethods: {
             associate: function(models) {
-                Session.belongsTo(models.Users, {foreignKey: 'created_by'});
+                Template.belongsTo(models.Users, {foreignKey: 'created_by'});
             },
 
             getUser: function(callback) {

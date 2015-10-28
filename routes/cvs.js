@@ -1,87 +1,49 @@
 var express = require('express');
 var router = express.Router();
-var passport = require('passport');
-var auth = require('../src/auth');
-var CV = require('../src/cv_model');
-var Template = require('../src/template_model');
-var pdf = require('html-pdf');
-var EJS = require('ejs');
+var models = require('../models');
 
-router.get('/edit', auth.isLoggedIn,function(req, res) {
-  var user = req.user;
-  var cv = new CV(null, user);
-  cv.get(function(err, response) {
-    var data = {
-      title: 'Editar información profesional', 
-      user: user, 
-      messages: req.flash('info') ,
-      cv: response || null
-    };
-    res.render('cv-form/edit-cv.ejs', data);
-  });
-});
 
-router.post('/', auth.isLoggedIn, function(req, res) {
-  var cv = new CV(req.body, req.user);
-  cv.save(function(err, response) {
-    if (!err) {
-      req.flash('info', 'Guardado correctamente.');
-      res.redirect('back');
+router.post('/create', function(req, res, next) {
+    var session_id = req.headers['x-session-id'];
+    if (session_id == null || session_id == 0) {
+        res.status(401).json({message: 'No session id header received'});
+        return;
     }
-  });
-});
+    models.Sessions.findById(session_id).then(function(session) {
+        if (session == null) {
+            res.status(401).json({message: "Invalid Session ID"});
+            return;
+        }
 
-router.get('/show/:id?',auth.isLoggedIn,function(req, res) { 
-  var user = req.user;
-  var cv = new CV(null, user);
-  cv.get(function(err, response) {
-    if(!response) {
-      req.flash('info', 'Error, no tiene ningun cv asociado a su cuenta.');
-      res.redirect('/cvs/edit');
-    } else {
-      console.log('response',response);
-      var templateId = typeof req.params.id != 'undefined' ? req.params.id : response.template_id;
-      Template.get(templateId,function(err,template){
-        res.render('cv_show', {
-          title: 'Ver CV',
-          user: user,
-          messages: req.flash('info') ,
-          cv: response,
-          template: template
+        session.getUser().then(function(user) {
+            if (user == null) {
+                res.status(500).json({message: 'Could not find user. (But found session)'});
+                return;
+            }
+
+            var name = null;
+            if (req.body['name'] != null) {
+                name = req.body.name;
+            }
+
+            if (req.body['template_id'] != null) {
+                var template_id = req.body['template_id'];
+                if template_ids
+                models.Templates.findAll({where: { id: {$in: req.body.template_ids}}}).then(function(templates) {
+                    models.CVs.create({
+                                        name: name,
+                                        template_id: template_id
+                    }).then(function(cv) {
+                        if (req.body['educations'] != null) {
+                            educations = req.body.educations;
+
+                        }
+                    });
+                });
+            }
         });
-      });
-    }
-  });
+    });
+
 });
 
-router.get('/setTemplate/:id',auth.isLoggedIn,function(req, res) {
-  var cv = new CV(null, req.user);
-  cv.setTemplate(req.params.id, function(err, response) {
-    console.log(err, response);
-    if(!err){
-      req.flash('info', 'Este es su nuevo cv predeterminado.');
-    }
-    else{
-      req.flash('info','Hubo un error mientras se cambiaba de cv.');
-    }
-    res.redirect('/cvs/show');
-  });
-});
-
-router.get('/download', auth.isLoggedIn,function(req, res){
-  var user = req.user;
-  var cvObj = new CV(null, user);
-  cvObj.get(function(err, cv) {
-    if(!cv) {
-      req.flash('info', 'Error, no tiene ningun cv asociado a su cuenta.');
-      res.redirect('/cvs/edit');
-    } else {
-        Template.get(cv.template_id, function(err,template){
-        var options = { format: 'Letter' };
-        var html = Template.getHtml(template, cv);
-        res.render('cv_download', {code: html});
-      });
-    }
-  });
-});
 module.exports = router;

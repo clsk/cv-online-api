@@ -1,6 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var models = require('../models');
+var express    = require('express');
+var multiparty = require('multiparty');
+var router     = express.Router();
+var models     = require('../models');
 
 router.post('/create', function(req, res, next) {
     var session_id = req.headers['x-session-id'];
@@ -35,8 +36,9 @@ router.post('/create', function(req, res, next) {
                                     description: req.body.description,
                                     html: req.body.html,
                                     css: req.body.css,
+                                    mobile_html: req.body.mobile_html,
+                                    mobile_css: req.body.mobile_css
                                     created_by: session.user_fb_id,
-                                    device: req.body.device || 'web'
                                     }).then(function(template) {
                 res.json({id: template.id});
             });
@@ -68,7 +70,7 @@ router.post('/:template_id/edit' ,function(req, res, next) {
             }
 
             models.Templates.findById(req.params.template_id).then(function(template) {
-                var validParameters  = ['name', 'description', 'html', 'css', 'device'];
+                var validParameters  = ['name', 'description', 'html', 'css', 'mobile_html', 'mobile_css'];
                 for (var param in req.body) {
                     if (req.body.hasOwnProperty(param) && validParameters.indexOf(param) != -1) {
                         template[param] = req.body[param];

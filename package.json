@@ -19,6 +19,7 @@
     "serve-favicon": "~2.2.1",
     "fs": "latest",
     "sequelize": "latest",
-    "request": "latest"
+    "request": "latest",
+    "multiparty": "latest"
   }
 }
