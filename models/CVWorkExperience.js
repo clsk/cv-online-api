@@ -8,7 +8,7 @@ module.exports = function(sql, DataTypes) {
     }, {
         classMethods: {
             associate: function(models) {
-                CVWorkExperience.belongsTo(models.CVs, {foreignKey: 'cv_id'});
+                CVWorkExperience.belongsTo(models.CVs, {foreignKey: 'cv_id', onDelete: 'cascade'});
             }
         }
     });

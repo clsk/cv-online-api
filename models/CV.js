@@ -18,6 +18,5 @@ module.exports = function(sql, DataTypes) {
         }
     });
 
-
     return CV;
 };

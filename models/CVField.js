@@ -6,11 +6,10 @@ module.exports = function(sql, DataTypes) {
     }, {
         classMethods: {
             associate: function(models) {
-                CVField.belongsTo(models.CVs, {foreignKey: 'cv_id'});
+                CVField.belongsTo(models.CVs, {foreignKey: 'cv_id', onDelete: 'cascade'});
             }
         }
     });
-
 
     return CVField;
 };

@@ -209,7 +209,6 @@ router.put('/:user_id/edit', function(req, res){
                 edit_user.save();
                 res.sendStatus(200);
             });
-
         });
     });
 });

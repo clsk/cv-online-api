@@ -8,11 +8,10 @@ module.exports = function(sql, DataTypes) {
     }, {
         classMethods: {
             associate: function(models) {
-                CVEducation.belongsTo(models.CVs, {foreignKey: 'cv_id'});
+                CVEducation.belongsTo(models.CVs, {foreignKey: 'cv_id', onDelete: 'cascade'});
             }
         }
     });
-
 
     return CVEducation;
 };
