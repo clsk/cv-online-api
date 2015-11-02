@@ -28,11 +28,11 @@ app.all("/*", function(req, res, next) {
 
 var users = require('./routes/users');
 var templates = require('./routes/templates');
-//var cvs = require('./routes/cvs');
+var cvs = require('./routes/cvs');
 
 app.use('/user', users);
 app.use('/template', templates);
-//app.use('/cv',cvs);
+app.use('/cv',cvs);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

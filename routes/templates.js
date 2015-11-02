@@ -48,8 +48,6 @@ router.post('/create', function(req, res, next) {
                 }
 
                 models.Templates.create(template_data).then(function(template) {
-                    res.json({id: template.id});
-
                     var preview_image = files.preview_image != null ? files.preview_image[0] : null;
                     if (preview_image != null) {
                         var preview_image_full_path = __dirname + "/../public/template_previews/" + template.id + '.' + preview_image['originalFilename'].split('.').pop();
@@ -67,6 +65,8 @@ router.post('/create', function(req, res, next) {
                             template.save();
                         });
                     }
+
+                    res.json({id: template.id});
                 });
             });
         });
@@ -97,7 +97,8 @@ router.post('/:template_id/edit' ,function(req, res, next) {
                     res.status(401).json({message: "Need admin rights to do this"});
                     return;
                 }
-                var template_id = fields.template_id != null ? fields.template_id[0] : null
+
+                var template_id = req.params.template_id;
                 if (template_id == null) {
                     res.status(400).json({message: "No template ID provided"});
                     return;
@@ -131,7 +132,7 @@ router.post('/:template_id/edit' ,function(req, res, next) {
                             template.save();
                         });
                     }
-                    
+
                     template.save();
                     res.sendStatus(200);
                 });

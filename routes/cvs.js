@@ -1,6 +1,7 @@
 var express = require('express');
-var router = express.Router();
-var models = require('../models');
+var router  = express.Router();
+var models  = require('../models');
+var util    = require('util');
 
 
 router.post('/create', function(req, res, next) {
@@ -16,26 +17,32 @@ router.post('/create', function(req, res, next) {
         }
 
         models.CVs.create({
-                            name: name,
-                            template_id: template_id,
+                            name: req.body.name,
+                            template_id: req.body.template_id,
                             created_by: session.user_fb_id
         }).then(function(cv) {
             if (req.body['educations'] != null) {
                 educations = req.body.educations;
-                for (education_data in educations) {
+                var educations_length = educations.length;
+                for (var i = 0; i < educations_length; i++) {
+                    var education_data = educations[i];
                     education_data['cv_id'] = cv.id;
                     models.CVEducations.create(education_data);
                 }
             }
 
             if (req.body['work_experiences'] != null) {
-                work_experiences = req.body.work_experiences;
-                for (work_experience_data in work_experiences) {
+                work_experiences = req.body['work_experiences'];
+                var work_experiences_length = work_experiences.length;
+                for (var i = 0; i < work_experiences_length; i++) {
+                    work_experience_data = work_experiences[i];
                     work_experience_data['cv_id'] = cv.id;
                     bullet_points = work_experience_data['bullet_points'];
-                    delete work_experience['bullet_points'];
+                    delete work_experience_data['bullet_points'];
                     models.CVWorkExperiences.create(work_experience_data).then(function(work_experience) {
-                        for (bullet_point in bullet_points) {
+                        var bullet_points_length = bullet_points.length;
+                        for (var j = 0; j < bullet_points_length; j++) {
+                            var bullet_point = bullet_points[j];
                             bullet_point['cv_work_experience_id'] = work_experience.id
                             models.CVWorkExperienceBulletPoints.create(bullet_point);
                         }
@@ -44,12 +51,17 @@ router.post('/create', function(req, res, next) {
             }
 
             if (req.body['fields'] != null) {
-                fields = req.body.fields;
-                for (field_data in fields) {
+                var fields = req.body.fields;
+                var fields_length = fields.length
+                for (var i = 0; i < fields_length; i++) {
+                    var field_data = fields[i];
                     field_data['cv_id'] = cv.id;
                     models.CVFields.create(field_data);
                 }
             }
+
+
+            res.json({cv_id: cv.id});
         });
     });
 });
@@ -67,6 +79,7 @@ router.post('/:cv_id/edit', function(req, res, next) {
             return;
         }
 
+        var cv_id = req.params.cv_id;
         models.CVs.findById(cv_id).then(function(cv) {
             if (cv == null) {
                 res.status(401).json({message: "Could not find CV with that ID"});
@@ -76,27 +89,27 @@ router.post('/:cv_id/edit', function(req, res, next) {
             models.CVEducations.destroy({where: {cv_id: cv.id}});
             if (req.body['educations'] != null) {
                 educations = req.body.educations;
-                for (education_data in educations) {
+                var educations_length = educations.length;
+                for (var i = 0; i < educations_length; i++) {
+                    var education_data = educations[i];
                     education_data['cv_id'] = cv.id;
                     models.CVEducations.create(education_data);
                 }
             }
 
-            models.CVEducations.destroy({where: {cv_id: cv.id}});
-            models.CVWorkExperiences.findAll({cv_id: cv.id}).then(function (work_experiences) {
-                for (work_experience in work_experiences) {
-                    models.CVWorkExperienceBulletPoints.destroy({where: {cv_work_experience_id: work_experience.id}});
-                }
-                work_experience.destroy();
-            });
+            models.CVWorkExperiences.destroy({where: {cv_id: cv.id}});
             if (req.body['work_experiences'] != null) {
-                work_experiences = req.body.work_experiences;
-                for (work_experience_data in work_experiences) {
+                work_experiences = req.body['work_experiences'];
+                var work_experiences_length = work_experiences.length;
+                for (var i = 0; i < work_experiences_length; i++) {
+                    work_experience_data = work_experiences[i];
                     work_experience_data['cv_id'] = cv.id;
                     bullet_points = work_experience_data['bullet_points'];
-                    delete work_experience['bullet_points'];
+                    delete work_experience_data['bullet_points'];
                     models.CVWorkExperiences.create(work_experience_data).then(function(work_experience) {
-                        for (bullet_point in bullet_points) {
+                        var bullet_points_length = bullet_points.length;
+                        for (var j = 0; j < bullet_points_length; j++) {
+                            var bullet_point = bullet_points[j];
                             bullet_point['cv_work_experience_id'] = work_experience.id
                             models.CVWorkExperienceBulletPoints.create(bullet_point);
                         }
@@ -106,12 +119,17 @@ router.post('/:cv_id/edit', function(req, res, next) {
 
             models.CVFields.destroy({where: {cv_id: cv.id}});
             if (req.body['fields'] != null) {
-                fields = req.body.fields;
-                for (field_data in fields) {
+                var fields = req.body.fields;
+                var fields_length = fields.length
+                for (var i = 0; i < fields_length; i++) {
+                    var field_data = fields[i];
                     field_data['cv_id'] = cv.id;
                     models.CVFields.create(field_data);
                 }
             }
+
+            console.log('sending 200');
+            res.sendStatus(200);
         });
     });
 });
