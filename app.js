@@ -15,6 +15,7 @@ models.sql.sync()
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.all("/*", function(req, res, next) {
   console.log("added headers");

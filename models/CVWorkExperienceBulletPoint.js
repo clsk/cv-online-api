@@ -5,7 +5,7 @@ module.exports = function(sql, DataTypes) {
     }, {
         classMethods: {
             associate: function(models) {
-                CVWorkExperienceBulletPoint.belongsTo(models.CVWorkExperience, {foreignKey: 'cv_work_experience_id'});
+                CVWorkExperienceBulletPoint.belongsTo(models.CVWorkExperiences, {foreignKey: 'cv_work_experience_id'});
             }
         }
     });

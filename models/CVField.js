@@ -1,12 +1,12 @@
 module.exports = function(sql, DataTypes) {
     var CVField = sql.define("CVField", {
         id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-        name: {type: DataTypes.STRING }
+        name: {type: DataTypes.STRING },
         value: {type: DataTypes.STRING }
     }, {
         classMethods: {
             associate: function(models) {
-                CVField.belongsTo(models.CV, {foreignKey: 'cv_id'});
+                CVField.belongsTo(models.CVs, {foreignKey: 'cv_id'});
             }
         }
     });
