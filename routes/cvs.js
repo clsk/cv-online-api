@@ -4,7 +4,6 @@ var models  = require('../models');
 var util    = require('util');
 var async   = require('async');
 
-
 router.post('/create', function(req, res, next) {
     var session_id = req.headers['x-session-id'];
     if (session_id == null || session_id == 0) {
@@ -134,7 +133,6 @@ router.post('/:cv_id/edit', function(req, res, next) {
         });
     });
 });
-
 
 router.get('/my', function(req, res, next) {
     var session_id = req.headers['x-session-id'];
