@@ -8,7 +8,8 @@ var fs         = require('fs');
 router.post('/create', function(req, res, next) {
     var form = new multiparty.Form();
     form.parse(req, function(err, fields, files) {
-        var session_id = fields['x-session-id'] ? fields['x-session-id'][0] : null;
+        var session_id = fields['X-Session-Id'] ? fields['X-Session-Id'][0] : null;
+        delete fields['X-Session-Id'];
         if (session_id == null || session_id == 0) {
             res.status(401).json({message: 'No session id header received'});
             return;
@@ -76,7 +77,8 @@ router.post('/create', function(req, res, next) {
 router.post('/:template_id/edit' ,function(req, res, next) {
     var form = new multiparty.Form();
     form.parse(req, function(err, fields, files) {
-        var session_id = req.headers['x-session-id'];
+        var session_id = fields['X-Session-Id'] ? fields['X-Session-Id'][0] : null;
+        delete fields['X-Session-Id'];
         if (session_id == null || session_id == 0) {
             res.status(401).json({message: 'No session id header received'});
             return;
