@@ -143,6 +143,105 @@ router.post('/:template_id/edit' ,function(req, res, next) {
     });
 });
 
+
+router.post('/:template_id/enable' ,function(req, res, next) {
+    var form = new multiparty.Form();
+    form.parse(req, function(err, fields, files) {
+        var session_id = fields['X-Session-Id'] ? fields['X-Session-Id'][0] : null;
+        delete fields['X-Session-Id'];
+        if (session_id == null || session_id == 0) {
+            res.status(401).json({message: 'No session id header received'});
+            return;
+        }
+
+        models.Sessions.findById(session_id).then(function(session) {
+            if (session == null) {
+                res.status(401).json({message: "Invalid Session ID"});
+                return;
+            }
+            models.Users.findById(session.user_fb_id).then(function(user) {
+                if (user == null) {
+                    res.status(401).json({message: "Could not find admin user"});
+                    return;
+                }
+
+                if (user.is_admin == false) {
+                    res.status(401).json({message: "Need admin rights to do this"});
+                    return;
+                }
+
+                var template_id = req.params.template_id;
+                if (template_id == null) {
+                    res.status(400).json({message: "No template ID provided"});
+                    return;
+                }
+
+                models.Templates.findById(template_id).then(function(template) {
+                    if (template_id == null) {
+                        res.status(400).json({message: "Could not find template in Database"});
+                        return;
+                    }
+
+                    template['is_disabled'] = false;
+
+                    template.save();
+                    res.sendStatus(200);
+                });
+            });
+        });
+    });
+});
+
+
+router.post('/:template_id/disable' ,function(req, res, next) {
+    var form = new multiparty.Form();
+    form.parse(req, function(err, fields, files) {
+        var session_id = fields['X-Session-Id'] ? fields['X-Session-Id'][0] : null;
+        delete fields['X-Session-Id'];
+        if (session_id == null || session_id == 0) {
+            res.status(401).json({message: 'No session id header received'});
+            return;
+        }
+
+        models.Sessions.findById(session_id).then(function(session) {
+            if (session == null) {
+                res.status(401).json({message: "Invalid Session ID"});
+                return;
+            }
+            models.Users.findById(session.user_fb_id).then(function(user) {
+                if (user == null) {
+                    res.status(401).json({message: "Could not find admin user"});
+                    return;
+                }
+
+                if (user.is_admin == false) {
+                    res.status(401).json({message: "Need admin rights to do this"});
+                    return;
+                }
+
+                var template_id = req.params.template_id;
+                if (template_id == null) {
+                    res.status(400).json({message: "No template ID provided"});
+                    return;
+                }
+
+                models.Templates.findById(template_id).then(function(template) {
+                    if (template_id == null) {
+                        res.status(400).json({message: "Could not find template in Database"});
+                        return;
+                    }
+
+                    template['is_disabled'] = true;
+
+                    template.save();
+                    res.sendStatus(200);
+                });
+            });
+        });
+    });
+});
+
+
 router.get('/list', function(req, res, next) {
     models.Templates.findAll().then(function(all_templates) {
         var templates = all_templates.map(function(template) { return template.toJSON(); });

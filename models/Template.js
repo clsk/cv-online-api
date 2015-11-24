@@ -9,6 +9,7 @@ module.exports = function(sql, DataTypes) {
         mobile_css: DataTypes.TEXT,
         preview_image_url: DataTypes.STRING,
         mobile_preview_image_url: DataTypes.STRING,
+        is_disabled: {type: DataTypes.BOOLEAN, defaultValue: false},
     }, {
         classMethods: {
             associate: function(models) {
