@@ -235,7 +235,22 @@ router.post('/:template_id/disable' ,function(req, res, next) {
     });
 });
 
+router.get('/list', function(req, res, next) {
+    models.Templates.findAll().then(function(all_templates) {
+        var templates = all_templates.map(function(template) { return template.toJSON(); });
+        res.status(200).json({ templates: templates });
+    });
+});
 
+router.get('/:template_id', function(req, res, next) {
+    models.Templates.findById(req.params.template_id).then(function(template) {
+        if (template == null) {
+            res.status(404).json({message: "Template not found"});
+        } else {
+            res.status(200).json(template.toJSON());
+        }
+    });
+});
 
 
 module.exports = router;
