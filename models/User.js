@@ -6,6 +6,7 @@ module.exports = function(sql, DataTypes) {
         webpage: DataTypes.STRING,
         telephone: DataTypes.STRING,
         lastname: DataTypes.STRING,
-        is_admin: DataTypes.BOOLEAN
+        is_admin: DataTypes.BOOLEAN,
+        profile_picture_url: DataTypes.STRING
     });
 };

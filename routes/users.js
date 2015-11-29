@@ -1,10 +1,9 @@
-var express = require('express');
-var router = express.Router();
-var bcrypt = require('bcrypt-nodejs');
-var nodemailer = require('nodemailer');
-var passwordGenerator = require('password-generator');
-var FB = require('../fb');
-var models = require('../models');
+var express    = require('express');
+var router     = express.Router();
+var FB         = require('../fb');
+var models     = require('../models');
+var multiparty = require('multiparty');
+var fs         = require('fs');
 
 var FB_CLIENT_ID = '547949358692521';
 var FB_CLIENT_SECRET = '7164c6b8a3135fb2a8e563172719de79';
@@ -244,6 +243,43 @@ router.get('/list', function(req, res, next) {
         });
     });
 });
+
+
+router.post('/changeProfilePicture', function(req, res) {
+    var form = new multiparty.Form();
+    form.parse(req, function(err, fields, files) {
+        var session_id = fields['X-Session-Id'] ? fields['X-Session-Id'][0] : null;
+        delete fields['X-Session-Id'];
+        if (session_id == null || session_id == 0) {
+            res.status(401).json({message: 'No session id header received'});
+            return;
+        }
+
+        models.Sessions.findById(session_id).then(function(session) {
+            if (session == null) {
+                res.status(401).json({message: "Invalid Session ID"});
+                return;
+            }
+            models.Users.findById(session.user_fb_id).then(function(user) {
+                if (user == null) {
+                    res.status(401).json({message: "Could not find admin user"});
+                    return;
+                }
+
+                var profile_picture = files.profilePicture != null ? files.profilePicture[0] : null;
+                var profile_picture_file_name = '/profile_pictures/' + user.fb_id + '.' + profile_picture['originalFilename'].split('.').pop();
+                var profile_picture_full_path = __dirname + '/../public' + profile_picture_file_name;
+
+                fs.rename(profile_picture['path'], profile_picture_full_path, function() {
+                    user['profile_picture_url'] = profile_picture_file_name;
+                    user.save();
+                    res.sendStatus(200);
+                });
+            });
+        });
+    });
+});
+
 
 
 module.exports = router;
